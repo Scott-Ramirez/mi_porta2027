@@ -1,8 +1,8 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "mi-porta2027",
   "compatibility_date": "2026-09-11",
   "assets": {
-    "directory": "./out"
+    "directory": "./out",
+    "not_found_handling": "single-page-application"
   }
 }
