@@ -1,250 +1,147 @@
 'use client';
 
-import { personalInfo, educationData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import { User, Terminal, GraduationCap, Globe, CheckCircle2 } from 'lucide-react';
 
 export default function About() {
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   return (
-    <section id="sobre-mi" className="about-section">
-      <div className="container">
-        <div className="section-heading">
-          <span className="section-tag">Perfil & Trayectoria</span>
-          <h2 className="section-title">Sobre Mí & Formación Superior</h2>
-          <p className="section-subtitle">
-            Conoce mi enfoque en desarrollo backend, infraestructura Linux con Docker y automatización con Python.
+    <section id="sobre-mi" className="py-20 lg:py-28 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <User className="w-3.5 h-3.5" />
+            <span>{t.about.tag}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            {t.about.title}
+          </h2>
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            {t.about.subtitle}
           </p>
         </div>
 
-        <div className="about-grid">
-          {/* Bio Card */}
-          <div className="bio-card glass-card">
-            <h3 className="card-heading">
-              <span>🐧</span>
-              <span>Enfoque Técnico & Infraestructura</span>
-            </h3>
-            <p className="bio-text">
-              Soy <strong>Profesional Técnico en Ingeniería de Software</strong> graduado de <strong>SENATI</strong>. Mi especialización principal es el <strong>desarrollo backend y la administración de servidores</strong>. He configurado y gestiono mi propio <strong>servidor casero (Home Server) bajo Ubuntu Server</strong>, implementando arquitecturas con <strong>Docker y Docker Compose</strong> para el aislamiento de servicios y bases de datos.
-            </p>
-            <p className="bio-text">
-              Utilizo <strong>Cloudflare Tunnels (cloudflared)</strong> para exponer servicios web de forma segura sin abrir puertos en el router. Además, potencio mi flujo de operaciones creando <strong>scripts automatizados en Python</strong> encargados de generar copias de seguridad programadas de bases de datos (PostgreSQL, MySQL, MongoDB), gestionar la retención de respaldos y automatizar el <strong>redespliegue de aplicaciones y contenedores</strong>.
-            </p>
-            <p className="bio-text">
-              Complemento mi perfil con desarrollo de APIs RESTful en <strong>Node.js y NestJS</strong>, aplicaciones móviles y desktop con <strong>Flutter</strong>, y modelado 3D intermedio en <strong>Blender</strong>.
-            </p>
+        {/* 2-Column Responsive Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Technical Bio Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/50 border border-slate-800/80 hover:border-cyan-500/30 transition-all duration-300 shadow-xl flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 pb-4 border-b border-slate-800">
+                <div className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-cyan-400">
+                  <Terminal className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">
+                  {t.about.bioTitle}
+                </h3>
+              </div>
 
-            <div className="about-details-grid">
-              <div className="detail-box">
-                <span className="detail-label">Especialidad:</span>
-                <span className="detail-val detail-highlight">Backend & DevOps</span>
+              <div className="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+                <p>{t.about.p1}</p>
+                <p>{t.about.p2}</p>
+                <p>{t.about.p3}</p>
               </div>
-              <div className="detail-box">
-                <span className="detail-label">Servidor Propio:</span>
-                <span className="detail-val">Ubuntu Server + Docker</span>
+            </div>
+
+            {/* Technical Detail Badges */}
+            <div className="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="p-3 sm:p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+                <span className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">{t.about.boxSpecialty}</span>
+                <span className="text-xs sm:text-sm font-bold text-cyan-400">{t.about.boxSpecialtyVal}</span>
               </div>
-              <div className="detail-box">
-                <span className="detail-label">Seguridad & Red:</span>
-                <span className="detail-val">cloudflared (Tunnels)</span>
+              <div className="p-3 sm:p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+                <span className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">{t.about.boxServer}</span>
+                <span className="text-xs sm:text-sm font-bold text-slate-200">{t.about.boxServerVal}</span>
               </div>
-              <div className="detail-box">
-                <span className="detail-label">Automatización:</span>
-                <span className="detail-val detail-highlight">Python Scripts</span>
+              <div className="p-3 sm:p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+                <span className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">{t.about.boxSecurity}</span>
+                <span className="text-xs sm:text-sm font-bold text-slate-200">{t.about.boxSecurityVal}</span>
+              </div>
+              <div className="p-3 sm:p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+                <span className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">{t.about.boxAuto}</span>
+                <span className="text-xs sm:text-sm font-bold text-emerald-400">{t.about.boxAutoVal}</span>
               </div>
             </div>
           </div>
 
-          {/* Education Card - Solo SENATI */}
-          <div className="education-card glass-card">
-            <h3 className="card-heading">
-              <span>🎓</span>
-              <span>Educación Superior</span>
-            </h3>
-            <div className="timeline">
-              {educationData.map((edu, idx) => (
-                <div key={idx} className="timeline-item">
-                  <div className="timeline-dot"></div>
-                  <div className="timeline-content">
-                    <div className="timeline-header">
-                      <span className="timeline-institution">{edu.institution}</span>
-                      <span className="timeline-badge">{edu.status}</span>
+          {/* Education & Languages Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/50 border border-slate-800/80 hover:border-indigo-500/30 transition-all duration-300 shadow-xl flex flex-col justify-between space-y-8">
+            
+            {/* Education Section */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 pb-4 border-b border-slate-800">
+                <div className="p-2.5 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-indigo-400">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">
+                  {t.about.eduTitle}
+                </h3>
+              </div>
+
+              <div className="relative pl-6 sm:pl-8 border-l-2 border-indigo-500/40 space-y-2">
+                <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-400"></div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-base sm:text-lg font-bold text-white">SENATI</span>
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-500/30">
+                    {t.about.eduStatus}
+                  </span>
+                </div>
+
+                <h4 className="text-sm font-semibold text-cyan-400">
+                  {t.about.eduDegree}
+                </h4>
+                <span className="block text-xs font-mono text-slate-400">
+                  {t.about.eduPeriod}
+                </span>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pt-1">
+                  {t.about.eduDesc}
+                </p>
+              </div>
+            </div>
+
+            {/* Languages Section */}
+            <div className="pt-6 border-t border-slate-800">
+              <div className="flex items-center gap-2 mb-4">
+                <Globe className="w-4 h-4 text-cyan-400" />
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  {t.about.langTitle}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div>
+                      <div className="text-sm font-bold text-white">{t.about.lang1Name}</div>
+                      <div className="text-xs text-slate-400">{t.about.lang1Level}</div>
                     </div>
-                    <h4 className="timeline-degree">{edu.degree}</h4>
-                    <span className="timeline-period">{edu.period}</span>
-                    <p className="timeline-note">
-                      Formación técnica superior de 3 años orientada a arquitectura de software, bases de datos relacionales y no relacionales, redes, infraestructura y desarrollo de aplicaciones industriales.
-                    </p>
                   </div>
                 </div>
-              ))}
+
+                <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div>
+                      <div className="text-sm font-bold text-white">{t.about.lang2Name}</div>
+                      <div className="text-xs text-slate-400">{t.about.lang2Level}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </div>
+
         </div>
+
       </div>
-
-      <style jsx>{`
-        .about-section {
-          padding: 6rem 0;
-          position: relative;
-        }
-
-        .about-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2.5rem;
-        }
-
-        .card-heading {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-size: 1.35rem;
-          font-weight: 700;
-          color: #fff;
-          margin-bottom: 1.5rem;
-          padding-bottom: 0.75rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .bio-text {
-          color: var(--text-secondary);
-          line-height: 1.8;
-          font-size: 1.02rem;
-          margin-bottom: 1.25rem;
-        }
-
-        .bio-text strong {
-          color: #fff;
-        }
-
-        .about-details-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          margin-top: 2rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .detail-box {
-          background: rgba(255, 255, 255, 0.03);
-          padding: 0.85rem 1rem;
-          border-radius: var(--radius-sm);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .detail-label {
-          display: block;
-          font-size: 0.75rem;
-          color: var(--text-dim);
-          text-transform: uppercase;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.2rem;
-        }
-
-        .detail-val {
-          font-size: 0.95rem;
-          color: #fff;
-          font-weight: 600;
-        }
-
-        .detail-highlight {
-          color: var(--accent-cyan) !important;
-        }
-
-        /* Timeline */
-        .timeline {
-          position: relative;
-          padding-left: 1.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-
-        .timeline::before {
-          content: '';
-          position: absolute;
-          top: 8px;
-          bottom: 8px;
-          left: 6px;
-          width: 2px;
-          background: linear-gradient(180deg, var(--accent-cyan), var(--accent-violet), transparent);
-        }
-
-        .timeline-item {
-          position: relative;
-        }
-
-        .timeline-dot {
-          position: absolute;
-          left: -1.5rem;
-          top: 6px;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          background: #0f172a;
-          border: 2px solid var(--accent-cyan);
-          box-shadow: 0 0 10px var(--accent-cyan);
-        }
-
-        .timeline-content {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          padding: 1.5rem;
-          border-radius: var(--radius-md);
-        }
-
-        .timeline-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 0.5rem;
-        }
-
-        .timeline-institution {
-          font-weight: 800;
-          color: var(--accent-cyan);
-          font-size: 1.25rem;
-        }
-
-        .timeline-badge {
-          font-size: 0.75rem;
-          font-weight: 700;
-          background: rgba(16, 185, 129, 0.15);
-          border: 1px solid rgba(16, 185, 129, 0.3);
-          color: #34d399;
-          padding: 0.2rem 0.6rem;
-          border-radius: var(--radius-full);
-        }
-
-        .timeline-degree {
-          font-size: 1.05rem;
-          color: #fff;
-          font-weight: 700;
-          margin-bottom: 0.25rem;
-        }
-
-        .timeline-period {
-          font-size: 0.82rem;
-          color: var(--text-muted);
-          font-family: var(--font-mono);
-          display: block;
-          margin-bottom: 0.75rem;
-        }
-
-        .timeline-note {
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-
-        @media (max-width: 868px) {
-          .about-grid {
-            grid-template-columns: 1fr;
-          }
-          .about-details-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
     </section>
   );
 }

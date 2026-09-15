@@ -2,8 +2,15 @@
 
 import { useState } from 'react';
 import { personalInfo } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import { Mail, MessageSquare, MapPin, Copy, Check, Send, ArrowUpRight } from 'lucide-react';
+import GithubIcon from './GithubIcon';
 
 export default function Contact() {
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   const [copied, setCopied] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
@@ -16,331 +23,198 @@ export default function Contact() {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    const mailtoLink = `mailto:${personalInfo.email}?subject=Contacto desde Portafolio de ${encodeURIComponent(formState.name)}&body=${encodeURIComponent(formState.message + '\n\nResponder a: ' + formState.email)}`;
+    const subjectPrefix = lang === 'es' ? 'Contacto desde Portafolio de' : 'Portfolio Inquiry from';
+    const bodyReply = lang === 'es' ? 'Responder a:' : 'Reply to:';
+    const mailtoLink = `mailto:${personalInfo.email}?subject=${subjectPrefix} ${encodeURIComponent(formState.name)}&body=${encodeURIComponent(formState.message + '\n\n' + bodyReply + ' ' + formState.email)}`;
     window.location.href = mailtoLink;
     setSent(true);
     setTimeout(() => setSent(false), 5000);
   };
 
   return (
-    <section id="contacto" className="contact-section">
-      <div className="container">
-        <div className="section-heading">
-          <span className="section-tag">Conectemos</span>
-          <h2 className="section-title">Hablemos de tu Próximo Proyecto</h2>
-          <p className="section-subtitle">
-            ¿Tienes una propuesta laboral, proyecto freelance o deseas colaborar en desarrollo de software con IA? Contáctame directamente.
+    <section id="contacto" className="py-20 lg:py-28 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <Mail className="w-3.5 h-3.5" />
+            <span>{t.contact.tag}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            {t.contact.title}
+          </h2>
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            {t.contact.subtitle}
           </p>
         </div>
 
-        <div className="contact-grid">
-          {/* Contact Direct Channels */}
-          <div className="channels-card glass-card">
-            <h3 className="channels-title">Canales de Contacto Directo</h3>
-            <p className="channels-desc">
-              Respondo con prontitud por WhatsApp o correo electrónico. Haz clic abajo para iniciar conversación o copiar mis datos.
-            </p>
+        {/* 2-Column Responsive Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Direct Channels Card */}
+          <div className="lg:col-span-6 p-6 sm:p-8 rounded-3xl bg-slate-900/50 border border-slate-800/80 shadow-xl space-y-6">
+            <div>
+              <h3 className="text-xl font-bold text-white mb-2">
+                {t.contact.directChannels}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                {t.contact.directDesc}
+              </p>
+            </div>
 
-            <div className="contact-action-box">
-              <a 
-                href={personalInfo.whatsappUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="action-channel whatsapp-channel"
+            <div className="space-y-3">
+              {/* WhatsApp Action */}
+              <a
+                href={personalInfo.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between p-4 rounded-2xl bg-emerald-950/20 hover:bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-500/60 transition-all duration-200"
               >
-                <span className="channel-icon">💬</span>
-                <div className="channel-details">
-                  <span className="channel-name">WhatsApp Directo</span>
-                  <span className="channel-val">{personalInfo.phone}</span>
+                <div className="flex items-center gap-3.5">
+                  <div className="p-3 rounded-xl bg-emerald-500/15 text-emerald-400">
+                    <MessageSquare className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs uppercase tracking-wider text-emerald-400 font-semibold">{t.contact.whatsappLabel}</span>
+                    <span className="text-sm sm:text-base font-bold text-white">{personalInfo.phone}</span>
+                  </div>
                 </div>
-                <span className="channel-arrow">↗</span>
+                <ArrowUpRight className="w-5 h-5 text-emerald-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
 
-              <div className="action-channel email-channel" onClick={copyToClipboard}>
-                <span className="channel-icon">✉️</span>
-                <div className="channel-details">
-                  <span className="channel-name">Correo Electrónico</span>
-                  <span className="channel-val">{personalInfo.email}</span>
+              {/* Email Action with Copy */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/30 transition-colors">
+                <div className="flex items-center gap-3.5">
+                  <div className="p-3 rounded-xl bg-cyan-500/10 text-cyan-400">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <span className="block text-xs uppercase tracking-wider text-slate-400 font-semibold">{t.contact.emailLabel}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-white truncate block">{personalInfo.email}</span>
+                  </div>
                 </div>
-                <button className="copy-btn">
-                  {copied ? '¡Copiado! ✓' : 'Copiar 📋'}
+
+                <button
+                  type="button"
+                  onClick={copyToClipboard}
+                  className="self-start sm:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition-colors cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">{t.contact.copiedBtn}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>{t.contact.copyBtn}</span>
+                    </>
+                  )}
                 </button>
               </div>
 
-              <div className="action-channel location-channel">
-                <span className="channel-icon">📍</span>
-                <div className="channel-details">
-                  <span className="channel-name">Ubicación y Disponibilidad</span>
-                  <span className="channel-val">{personalInfo.location} — Remoto / Presencial</span>
+              {/* Location Card */}
+              <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+                <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="block text-xs uppercase tracking-wider text-slate-400 font-semibold">{t.contact.locationLabel}</span>
+                  <span className="text-xs sm:text-sm font-semibold text-white">{t.contact.locationVal}</span>
                 </div>
               </div>
             </div>
 
-            <div className="socials-footer">
-              <span className="socials-title">Perfiles Profesionales:</span>
-              <div className="socials-pills">
-                <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="social-tag">GitHub</a>
-              </div>
+            {/* Socials Link */}
+            <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-xs text-slate-400 font-medium">GitHub:</span>
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold transition-colors"
+              >
+                <GithubIcon className="w-4 h-4" />
+                <span>{t.contact.githubLabel}</span>
+              </a>
             </div>
           </div>
 
-          {/* Quick Message Form */}
-          <div className="form-card glass-card">
-            <h3 className="form-title">Envíame un Mensaje Rápido</h3>
-            <form onSubmit={handleSendMessage} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name">Tu Nombre:</label>
-                <input 
-                  type="text" 
-                  id="name" 
+          {/* Quick Contact Form */}
+          <div className="lg:col-span-6 p-6 sm:p-8 rounded-3xl bg-slate-900/50 border border-slate-800/80 shadow-xl">
+            <h3 className="text-xl font-bold text-white mb-2">
+              {t.contact.formTitle}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+              {t.contact.formDesc}
+            </p>
+
+            <form onSubmit={handleSendMessage} className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  {t.contact.fieldName}
+                </label>
+                <input
+                  type="text"
+                  id="name"
                   required
-                  placeholder="Ej. Carlos Mendoza"
+                  placeholder={lang === 'es' ? 'Ej. Carlos Mendoza' : 'E.g. John Doe'}
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-500 text-sm outline-none transition-all"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Tu Correo Electrónico:</label>
-                <input 
-                  type="email" 
-                  id="email" 
+              <div>
+                <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  {t.contact.fieldEmail}
+                </label>
+                <input
+                  type="email"
+                  id="email"
                   required
                   placeholder="ejemplo@empresa.com"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-500 text-sm outline-none transition-all"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="message">Mensaje o Propuesta:</label>
-                <textarea 
-                  id="message" 
-                  rows="4" 
+              <div>
+                <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  {t.contact.fieldMsg}
+                </label>
+                <textarea
+                  id="message"
+                  rows="4"
                   required
-                  placeholder="Cuéntame sobre el puesto o proyecto..."
+                  placeholder={t.contact.fieldMsgPlaceholder}
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                ></textarea>
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-500 text-sm outline-none transition-all resize-none"
+                />
               </div>
 
-              <button type="submit" className="btn-primary form-submit-btn">
-                <span>Enviar Propuesta por Correo</span>
-                <span>🚀</span>
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-cyan-400 to-indigo-400 hover:from-cyan-300 hover:to-indigo-300 shadow-lg shadow-cyan-500/25 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              >
+                <Send className="w-4 h-4" />
+                <span>{t.contact.sendBtn}</span>
               </button>
 
               {sent && (
-                <div className="form-success-note">
-                  ✓ Abriendo tu cliente de correo para enviar el mensaje...
-                </div>
+                <p className="text-center text-xs text-emerald-400 font-semibold pt-1">
+                  {t.contact.sentFeedback}
+                </p>
               )}
             </form>
           </div>
+
         </div>
+
       </div>
-
-      <style jsx>{`
-        .contact-section {
-          padding: 6rem 0;
-          position: relative;
-        }
-
-        .contact-grid {
-          display: grid;
-          grid-template-columns: 1.1fr 0.9fr;
-          gap: 2.5rem;
-        }
-
-        .channels-title, .form-title {
-          font-size: 1.35rem;
-          font-weight: 700;
-          color: #fff;
-          margin-bottom: 0.75rem;
-        }
-
-        .channels-desc {
-          color: var(--text-muted);
-          line-height: 1.6;
-          margin-bottom: 2rem;
-        }
-
-        .contact-action-box {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          margin-bottom: 2.5rem;
-        }
-
-        .action-channel {
-          display: flex;
-          align-items: center;
-          gap: 1.25rem;
-          padding: 1.25rem;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: var(--radius-md);
-          cursor: pointer;
-          transition: var(--transition-normal);
-        }
-
-        .action-channel:hover {
-          background: rgba(255, 255, 255, 0.06);
-          border-color: var(--accent-cyan);
-          transform: translateX(4px);
-        }
-
-        .whatsapp-channel:hover {
-          border-color: #10b981;
-          box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-        }
-
-        .channel-icon {
-          font-size: 1.75rem;
-        }
-
-        .channel-details {
-          flex: 1;
-        }
-
-        .channel-name {
-          display: block;
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          color: var(--text-muted);
-          font-weight: 700;
-          letter-spacing: 0.5px;
-        }
-
-        .channel-val {
-          display: block;
-          font-size: 1.05rem;
-          color: #fff;
-          font-weight: 600;
-          margin-top: 0.15rem;
-        }
-
-        .channel-arrow {
-          font-size: 1.25rem;
-          color: var(--text-dim);
-          transition: var(--transition-fast);
-        }
-
-        .action-channel:hover .channel-arrow {
-          color: var(--accent-cyan);
-          transform: translate(2px, -2px);
-        }
-
-        .copy-btn {
-          background: rgba(56, 189, 248, 0.1);
-          border: 1px solid rgba(56, 189, 248, 0.3);
-          color: var(--accent-cyan);
-          padding: 0.4rem 0.8rem;
-          border-radius: var(--radius-sm);
-          font-size: 0.8rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: var(--transition-fast);
-        }
-
-        .copy-btn:hover {
-          background: var(--accent-cyan);
-          color: #000;
-        }
-
-        .socials-footer {
-          padding-top: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .socials-title {
-          font-size: 0.85rem;
-          color: var(--text-dim);
-          text-transform: uppercase;
-          font-weight: 700;
-          display: block;
-          margin-bottom: 0.75rem;
-        }
-
-        .socials-pills {
-          display: flex;
-          gap: 0.6rem;
-        }
-
-        .social-tag {
-          padding: 0.4rem 0.9rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: var(--radius-full);
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-        }
-
-        .social-tag:hover {
-          background: var(--accent-cyan);
-          color: #000;
-          font-weight: 700;
-        }
-
-        /* Form */
-        .contact-form {
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-          margin-top: 1.25rem;
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .form-group label {
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          font-weight: 500;
-        }
-
-        .form-group input, .form-group textarea {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: var(--radius-sm);
-          padding: 0.85rem 1rem;
-          color: #fff;
-          font-family: inherit;
-          font-size: 0.95rem;
-          transition: var(--transition-fast);
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-          outline: none;
-          border-color: var(--accent-cyan);
-          background: rgba(255, 255, 255, 0.08);
-          box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
-        }
-
-        .form-submit-btn {
-          width: 100%;
-          margin-top: 0.5rem;
-        }
-
-        .form-success-note {
-          background: rgba(16, 185, 129, 0.15);
-          border: 1px solid rgba(16, 185, 129, 0.4);
-          color: #34d399;
-          padding: 0.75rem;
-          border-radius: var(--radius-sm);
-          text-align: center;
-          font-size: 0.9rem;
-          font-weight: 600;
-        }
-
-        @media (max-width: 868px) {
-          .contact-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
     </section>
   );
 }

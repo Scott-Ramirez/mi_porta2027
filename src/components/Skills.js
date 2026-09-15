@@ -2,214 +2,139 @@
 
 import { useState } from 'react';
 import { skillsData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import DynamicIcon from './DynamicIcon';
+import { Cpu, Server, Terminal, Database, Smartphone, Code2, Box, Wrench } from 'lucide-react';
 
 export default function Skills() {
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   const [selectedTab, setSelectedTab] = useState('all');
 
-  const categories = [
-    { id: 'all', name: 'Todas las Competencias' },
-    { id: 'backend', name: '🟢 Backend & APIs' },
-    { id: 'devopsAndInfra', name: '🐧 Servidores & Docker' },
-    { id: 'databases', name: '💾 Bases de Datos' },
-    { id: 'flutterApps', name: '📱 Flutter Multiplataforma' },
-    { id: 'frontend', name: '⚛️ Frontend' },
-    { id: 'creativity3D', name: '🎮 Modelado 3D & Motores' },
-    { id: 'tools', name: '🛠️ Herramientas' }
-  ];
+  const categoryIcons = {
+    all: Cpu,
+    backend: Server,
+    devopsAndInfra: Terminal,
+    databases: Database,
+    flutterApps: Smartphone,
+    frontend: Code2,
+    creativity3D: Box,
+    tools: Wrench,
+  };
 
   const getVisibleSkills = () => {
+    const isEn = lang === 'en';
     if (selectedTab === 'all') {
       return [
-        { category: 'Desarrollo Backend & APIs RESTful', items: skillsData.backend, badge: 'Core Backend' },
-        { category: 'Infraestructura, Servidores & DevOps', items: skillsData.devopsAndInfra, badge: 'Home-Server & Docker' },
-        { category: 'Bases de Datos Relacionales & NoSQL', items: skillsData.databases, badge: 'Persistencia & Backups' },
-        { category: 'Desarrollo Multiplataforma con Flutter', items: skillsData.flutterApps, badge: 'Móvil & Desktop' },
-        { category: 'Desarrollo Frontend & Web', items: skillsData.frontend, badge: 'Web UI' },
-        { category: 'Modelado 3D & Motores Gráficos', items: skillsData.creativity3D, badge: 'Blender & Engines' },
-        { category: 'Herramientas de Trabajo & Testing', items: skillsData.tools, badge: 'DevTools' }
+        { category: isEn ? 'Backend Development & RESTful APIs' : 'Desarrollo Backend & APIs RESTful', items: skillsData.backend, badge: 'Core Backend' },
+        { category: isEn ? 'Infrastructure, Linux Servers & DevOps' : 'Infraestructura, Servidores & DevOps', items: skillsData.devopsAndInfra, badge: 'Home-Server & Docker' },
+        { category: isEn ? 'Relational & NoSQL Databases' : 'Bases de Datos Relacionales & NoSQL', items: skillsData.databases, badge: 'Persistencia & Backups' },
+        { category: isEn ? 'Cross-Platform Mobile & Desktop (Flutter)' : 'Desarrollo Multiplataforma con Flutter', items: skillsData.flutterApps, badge: 'Móvil & Desktop' },
+        { category: isEn ? 'Frontend Web Development' : 'Desarrollo Frontend & Web', items: skillsData.frontend, badge: 'Web UI' },
+        { category: isEn ? '3D Modeling & Game Engines' : 'Modelado 3D & Motores Gráficos', items: skillsData.creativity3D, badge: 'Blender & Engines' },
+        { category: isEn ? 'DevTools, Testing & Methodologies' : 'Herramientas de Trabajo & Testing', items: skillsData.tools, badge: 'DevTools' }
       ];
     }
     const catMap = {
-      backend: { category: 'Desarrollo Backend & APIs RESTful', items: skillsData.backend, badge: 'Core Backend' },
-      devopsAndInfra: { category: 'Infraestructura, Servidores & DevOps', items: skillsData.devopsAndInfra, badge: 'Home-Server & Docker' },
-      databases: { category: 'Bases de Datos Relacionales & NoSQL', items: skillsData.databases, badge: 'Persistencia & Backups' },
-      flutterApps: { category: 'Desarrollo Multiplataforma con Flutter', items: skillsData.flutterApps, badge: 'Móvil & Desktop' },
-      frontend: { category: 'Desarrollo Frontend & Web', items: skillsData.frontend, badge: 'Web UI' },
-      creativity3D: { category: 'Modelado 3D & Motores Gráficos', items: skillsData.creativity3D, badge: 'Blender & Engines' },
-      tools: { category: 'Herramientas de Trabajo & Testing', items: skillsData.tools, badge: 'DevTools' }
+      backend: { category: isEn ? 'Backend Development & RESTful APIs' : 'Desarrollo Backend & APIs RESTful', items: skillsData.backend, badge: 'Core Backend' },
+      devopsAndInfra: { category: isEn ? 'Infrastructure, Linux Servers & DevOps' : 'Infraestructura, Servidores & DevOps', items: skillsData.devopsAndInfra, badge: 'Home-Server & Docker' },
+      databases: { category: isEn ? 'Relational & NoSQL Databases' : 'Bases de Datos Relacionales & NoSQL', items: skillsData.databases, badge: 'Persistencia & Backups' },
+      flutterApps: { category: isEn ? 'Cross-Platform Mobile & Desktop (Flutter)' : 'Desarrollo Multiplataforma con Flutter', items: skillsData.flutterApps, badge: 'Móvil & Desktop' },
+      frontend: { category: isEn ? 'Frontend Web Development' : 'Desarrollo Frontend & Web', items: skillsData.frontend, badge: 'Web UI' },
+      creativity3D: { category: isEn ? '3D Modeling & Game Engines' : 'Modelado 3D & Motores Gráficos', items: skillsData.creativity3D, badge: 'Blender & Engines' },
+      tools: { category: isEn ? 'DevTools, Testing & Methodologies' : 'Herramientas de Trabajo & Testing', items: skillsData.tools, badge: 'DevTools' }
     };
     return [catMap[selectedTab]];
   };
 
   return (
-    <section id="habilidades" className="skills-section">
-      <div className="container">
-        <div className="section-heading">
-          <span className="section-tag">Competencias Técnicas</span>
-          <h2 className="section-title">Stack Tecnológico & Habilidades</h2>
-          <p className="section-subtitle">
-            Especializado en <strong>Desarrollo Backend</strong> e infraestructura Linux: diseño de APIs con <strong>Node.js y NestJS</strong>, gestión de servidores propios con <strong>Ubuntu Server y Docker</strong>, y automatización con <strong>Python</strong>.
+    <section id="habilidades" className="py-20 lg:py-28 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <Cpu className="w-3.5 h-3.5" />
+            <span>{t.skills.tag}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            {t.skills.title}
+          </h2>
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            {t.skills.subtitle}
           </p>
         </div>
 
-        {/* Category Tabs */}
-        <div className="skills-tabs">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              className={`tab-btn ${selectedTab === cat.id ? 'active' : ''}`}
-              onClick={() => setSelectedTab(cat.id)}
-            >
-              {cat.name}
-            </button>
-          ))}
+        {/* Categories Bar (Wrap centrado sin desbordamiento) */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-5xl mx-auto mb-10 px-2">
+          {t.skills.categories.map((cat) => {
+            const Icon = categoryIcons[cat.id] || Cpu;
+            const isActive = selectedTab === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedTab(cat.id)}
+                className={`whitespace-nowrap flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md shadow-cyan-950/60 font-semibold'
+                    : 'bg-slate-900/60 hover:bg-slate-850 text-slate-400 hover:text-slate-200 border border-slate-800'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Skills Display Grid */}
-        <div className="skills-groups">
-          {getVisibleSkills().map((group, gIdx) => (
-            <div key={gIdx} className="skills-category-card glass-card">
-              <div className="category-header">
-                <h3 className="category-title">{group.category}</h3>
-                <span className="category-badge">{group.badge}</span>
+        {/* Skills Groups & Cards */}
+        <div className="space-y-12">
+          {getVisibleSkills().map((group, groupIdx) => (
+            <div key={groupIdx} className="space-y-5">
+              
+              {/* Group Header */}
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                  <span>{group.category}</span>
+                </h3>
+                <span className="text-xs font-mono px-2.5 py-1 rounded-md bg-slate-900 text-cyan-400 border border-slate-800">
+                  {group.badge}
+                </span>
               </div>
-              <div className="skills-grid-cards">
-                {group.items.map((skill, sIdx) => (
-                  <div key={sIdx} className="skill-item-card">
-                    <div className="skill-item-header">
-                      <span className="skill-icon">{skill.icon}</span>
-                      <h4 className="skill-name">{skill.name}</h4>
+
+              {/* Skills Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {group.items.map((skill, skillIdx) => (
+                  <div
+                    key={skillIdx}
+                    className="group p-5 rounded-2xl bg-slate-900/40 hover:bg-slate-900/90 border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-cyan-950/30 flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:text-cyan-300 transition-all">
+                          <DynamicIcon name={skill.icon} className="w-5 h-5" />
+                        </div>
+                        <h4 className="text-sm sm:text-base font-semibold text-white group-hover:text-cyan-300 transition-colors">
+                          {skill.name}
+                        </h4>
+                      </div>
+
+                      <p className="text-xs text-slate-400 leading-relaxed font-normal">
+                        {skill.description}
+                      </p>
                     </div>
-                    <p className="skill-desc">{skill.description}</p>
                   </div>
                 ))}
               </div>
+
             </div>
           ))}
         </div>
+
       </div>
-
-      <style jsx>{`
-        .skills-section {
-          padding: 6rem 0;
-          position: relative;
-        }
-
-        /* Tabs */
-        .skills-tabs {
-          display: flex;
-          justify-content: center;
-          gap: 0.6rem;
-          flex-wrap: wrap;
-          margin-bottom: 3.5rem;
-        }
-
-        .tab-btn {
-          padding: 0.55rem 1.25rem;
-          border-radius: var(--radius-full);
-          background: rgba(15, 23, 42, 0.6);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--text-secondary);
-          font-size: 0.88rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: var(--transition-normal);
-        }
-
-        .tab-btn:hover {
-          color: #fff;
-          border-color: var(--accent-cyan);
-        }
-
-        .tab-btn.active {
-          background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-          border-color: transparent;
-          color: #fff;
-          box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-        }
-
-        /* Skills Groups */
-        .skills-groups {
-          display: flex;
-          flex-direction: column;
-          gap: 2.5rem;
-        }
-
-        .skills-category-card {
-          padding: 2rem 2.5rem;
-        }
-
-        .category-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.75rem;
-          padding-bottom: 0.75rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          flex-wrap: wrap;
-          gap: 0.5rem;
-        }
-
-        .category-title {
-          font-size: 1.25rem;
-          font-weight: 800;
-          color: #fff;
-        }
-
-        .category-badge {
-          font-size: 0.75rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          padding: 0.25rem 0.65rem;
-          border-radius: var(--radius-full);
-          background: rgba(56, 189, 248, 0.1);
-          color: var(--accent-cyan);
-          border: 1px solid rgba(56, 189, 248, 0.25);
-        }
-
-        .skills-grid-cards {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 1.25rem;
-        }
-
-        .skill-item-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: var(--radius-md);
-          padding: 1.25rem;
-          transition: var(--transition-normal);
-        }
-
-        .skill-item-card:hover {
-          background: rgba(255, 255, 255, 0.06);
-          border-color: var(--accent-cyan);
-          transform: translateY(-3px);
-        }
-
-        .skill-item-header {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          margin-bottom: 0.5rem;
-        }
-
-        .skill-icon {
-          font-size: 1.25rem;
-        }
-
-        .skill-name {
-          font-size: 1rem;
-          font-weight: 700;
-          color: #fff;
-        }
-
-        .skill-desc {
-          font-size: 0.85rem;
-          color: var(--text-muted);
-          line-height: 1.5;
-        }
-      `}</style>
     </section>
   );
 }

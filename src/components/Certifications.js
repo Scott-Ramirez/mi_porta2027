@@ -1,135 +1,79 @@
 'use client';
 
 import { certificationsData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import DynamicIcon from './DynamicIcon';
+import { Award, ExternalLink } from 'lucide-react';
 
 export default function Certifications() {
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   return (
-    <section id="certificados" className="certs-section">
-      <div className="container">
-        <div className="section-heading">
-          <span className="section-tag">Validación Académica</span>
-          <h2 className="section-title">Certificaciones Oficiales</h2>
-          <p className="section-subtitle">
-            Acreditaciones internacionales respaldadas por Cisco Networking Academy en áreas de ciberseguridad, IoT, redes y emprendimiento tecnológico.
+    <section id="certificados" className="py-20 lg:py-28 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <Award className="w-3.5 h-3.5" />
+            <span>{t.certs.tag}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            {t.certs.title}
+          </h2>
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            {t.certs.subtitle}
           </p>
         </div>
 
-        <div className="certs-grid">
+        {/* Certifications Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {certificationsData.map((cert, index) => (
-            <div key={index} className="cert-card glass-card">
-              <div className="cert-top">
-                <span className="cert-icon">{cert.icon}</span>
-                <span className="cert-badge">{cert.badge}</span>
+            <div
+              key={index}
+              className="group p-6 rounded-2xl bg-slate-900/50 hover:bg-slate-900/90 border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-cyan-950/30 flex flex-col justify-between space-y-5"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 transition-transform">
+                    <DynamicIcon name={cert.icon} className="w-6 h-6" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-cyan-300 border border-slate-700">
+                    {cert.badge}
+                  </span>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+                    {cert.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-400 font-medium">
+                    {cert.issuer}
+                  </p>
+                </div>
               </div>
 
-              <h3 className="cert-title">{cert.title}</h3>
-              <p className="cert-issuer">{cert.issuer}</p>
-
-              <div className="cert-footer">
-                <span className="cert-date">{cert.date}</span>
-                <a 
-                  href={cert.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="cert-verify-link"
+              <div className="pt-4 border-t border-slate-800/60 flex items-center justify-between">
+                <span className="text-xs text-slate-500 font-mono">
+                  {t.certs.officialDate}
+                </span>
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors"
                 >
-                  <span>Verificar</span>
-                  <span>↗</span>
+                  <span>{t.certs.verify}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
           ))}
         </div>
+
       </div>
-
-      <style jsx>{`
-        .certs-section {
-          padding: 6rem 0;
-          position: relative;
-        }
-
-        .certs-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-          gap: 1.75rem;
-        }
-
-        .cert-card {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 1.75rem;
-        }
-
-        .cert-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.25rem;
-        }
-
-        .cert-icon {
-          font-size: 2rem;
-        }
-
-        .cert-badge {
-          background: rgba(139, 92, 246, 0.12);
-          border: 1px solid rgba(139, 92, 246, 0.3);
-          color: #c084fc;
-          font-size: 0.75rem;
-          font-weight: 700;
-          padding: 0.25rem 0.65rem;
-          border-radius: var(--radius-full);
-          text-transform: uppercase;
-        }
-
-        .cert-title {
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: #fff;
-          line-height: 1.4;
-          margin-bottom: 0.5rem;
-        }
-
-        .cert-issuer {
-          color: var(--text-muted);
-          font-size: 0.88rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .cert-footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding-top: 1rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .cert-date {
-          font-size: 0.8rem;
-          color: var(--accent-cyan);
-          font-weight: 600;
-        }
-
-        .cert-verify-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.3rem;
-          font-size: 0.85rem;
-          font-weight: 600;
-          color: #fff;
-          background: rgba(255, 255, 255, 0.06);
-          padding: 0.4rem 0.8rem;
-          border-radius: var(--radius-sm);
-          transition: var(--transition-fast);
-        }
-
-        .cert-verify-link:hover {
-          background: var(--accent-cyan);
-          color: #000;
-          box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-        }
-      `}</style>
     </section>
   );
 }

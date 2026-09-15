@@ -1,838 +1,434 @@
 'use client';
 
 import Link from 'next/link';
-import { personalInfo, certificationsData, educationData, skillsData } from '@/data/portfolioData';
+import { personalInfo, certificationsData, educationData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import { 
+  ArrowLeft, 
+  Printer, 
+  MessageSquare, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  CheckCircle2, 
+  Award, 
+  ExternalLink, 
+  GraduationCap, 
+  Terminal, 
+  Server, 
+  Boxes, 
+  Cpu, 
+  Database, 
+  Globe, 
+  FileText,
+  Sparkles
+} from 'lucide-react';
+import GithubIcon from '@/components/GithubIcon';
 
 export default function CVPage() {
+  const { lang, toggleLang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="cv-wrapper">
-      {/* Top Action Bar (hidden when printing) */}
-      <div className="cv-top-bar no-print">
-        <div className="container cv-top-container">
-          <Link href="/" className="cv-back-link">
-            <span>← Volver al Portafolio</span>
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 sm:py-10 print:py-0 print:bg-slate-950 transition-colors duration-300">
+      
+      {/* Interactive Top Control Bar (Hidden when printing) */}
+      <div className="max-w-4xl mx-auto px-4 mb-6 sm:mb-8 no-print space-y-3">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-800 shadow-2xl">
+          
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors self-start sm:self-center"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{t.cv.back}</span>
           </Link>
-          <div className="cv-actions">
-            <button onClick={handlePrint} className="btn-print">
-              <span>Imprimir / Exportar a PDF</span>
-              <span>🖨️</span>
-            </button>
-            <a 
-              href={personalInfo.whatsappUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="btn-whatsapp-cv"
+
+          {/* Center: Language Switcher */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleLang}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 border border-cyan-500/30 text-cyan-300 hover:bg-slate-800 transition-all cursor-pointer"
+              title="Cambiar idioma / Change language"
             >
-              <span>Contactar por WhatsApp</span>
-              <span>💬</span>
+              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Idioma: <strong>{lang.toUpperCase()}</strong></span>
+              <span className="text-[10px] text-slate-400">({lang === 'es' ? 'Switch to EN' : 'Cambiar a ES'})</span>
+            </button>
+          </div>
+
+          {/* Right Actions */}
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <button
+              onClick={handlePrint}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-300 hover:from-cyan-300 hover:to-teal-200 shadow-lg shadow-cyan-900/40 transition-all cursor-pointer transform hover:-translate-y-0.5"
+            >
+              <Printer className="w-4 h-4" />
+              <span>{t.cv.savePdf}</span>
+            </button>
+
+            <a
+              href={personalInfo.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center p-2.5 sm:px-3.5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-950/40 hover:bg-emerald-950/70 border border-emerald-500/30 transition-all"
+              title="Contactar por WhatsApp"
+            >
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <span className="hidden sm:inline ml-1.5">{t.cv.whatsapp}</span>
             </a>
           </div>
+
+        </div>
+
+        {/* Tip */}
+        <div className="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <span>
+            {lang === 'es'
+              ? 'Tip para exportar: En el cuadro de diálogo de impresión, selecciona Guardar como PDF y activa la opción Gráficos de fondo.'
+              : 'Export tip: In the print dialog, select Save as PDF and ensure Background graphics is enabled.'}
+          </span>
         </div>
       </div>
 
-      {/* CV Paper */}
-      <div className="container cv-paper print-page">
-        {/* Header */}
-        <header className="cv-header">
-          <div className="cv-header-main">
-            <h1 className="cv-fullname">{personalInfo.name}</h1>
-            <h2 className="cv-profession">{personalInfo.title}</h2>
-            <p className="cv-subline">Especialista en Backend (Node.js, NestJS), Infraestructura Linux (Ubuntu Server, Docker, cloudflared) & Automatización con Python</p>
-            
-            <div className="cv-contact-row">
-              <span className="contact-item"><strong>Ubicación:</strong> {personalInfo.location}</span>
-              <span className="contact-item"><strong>Teléfono:</strong> {personalInfo.phone}</span>
-              <span className="contact-item"><strong>Email:</strong> {personalInfo.email}</span>
-              <span className="contact-item"><strong>GitHub:</strong> github.com/Scott-Ramirez</span>
+      {/* CV Paper Container (Tech Dark Mode Only) */}
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 print:max-w-none print:px-0">
+        <div className="print-page bg-slate-900/95 rounded-3xl border border-cyan-500/25 shadow-2xl shadow-black/80 p-6 sm:p-10 lg:p-12 space-y-6 print:space-y-4">
+
+          {/* Accent Color Header Line (with safe top padding) */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-emerald-400 rounded-full mb-6" />
+
+          {/* Top Executive Header */}
+          <header className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-slate-800">
+            <div className="space-y-2">
+              <div className="inline-block">
+                <span className="text-[11px] font-bold tracking-wider uppercase text-cyan-400">
+                  {t.cv.badgeCv}
+                </span>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
+                  {personalInfo.name}
+                </h1>
+              </div>
+
+              <p className="text-xs sm:text-sm font-bold text-slate-300">
+                {t.cv.roleTitle}
+              </p>
+
+              {/* Contact Pill Row */}
+              <div className="pt-2 flex flex-wrap items-center gap-y-2 gap-x-4 text-xs font-medium text-slate-400">
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="text-slate-300">{personalInfo.location}</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="text-slate-300">{personalInfo.phone}</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="text-slate-300">{personalInfo.email}</span>
+                </span>
+                <a
+                  href={personalInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 transition-colors"
+                >
+                  <GithubIcon className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>github.com/Scott-Ramirez</span>
+                </a>
+              </div>
             </div>
-          </div>
-          
-          <div className="cv-photo-box">
-            <img 
-              src={personalInfo.photo} 
-              alt={personalInfo.name} 
-              className="cv-photo-img"
-            />
-          </div>
-        </header>
 
-        {/* 2-Column Content Layout */}
-        <div className="cv-body-grid">
-          {/* Left Column */}
-          <aside className="cv-left-col">
-            {/* Stack Técnico */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Stack Técnico</h3>
+            {/* Photo Avatar */}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-cyan-500/40 shadow-xl shrink-0 self-start sm:self-center">
+              <img
+                src={personalInfo.photo}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </header>
+
+          {/* Section: Perfil Profesional */}
+          <section className="space-y-2 break-inside-avoid">
+            <h2 className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <Terminal className="w-3.5 h-3.5" />
+              <span>{t.cv.summaryTitle}</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-justify">
+              {t.cv.summaryText}
+            </p>
+          </section>
+
+          {/* Section: Core Technical Stack Grid */}
+          <section className="space-y-2 break-inside-avoid">
+            <h2 className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <Cpu className="w-3.5 h-3.5" />
+              <span>{t.cv.skillsTitle}</span>
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
               
-              <div className="tech-group">
-                <h4 className="tech-group-name">Backend & APIs</h4>
-                <ul className="tech-bullet-list">
-                  <li>Node.js & ecosistema npm</li>
-                  <li>NestJS (Arquitectura modular)</li>
-                  <li>Diseño de APIs RESTful</li>
-                  <li>Python (Backend & Scripts)</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <Server className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Backend & APIs</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Node.js, NestJS, TypeScript, APIs RESTful, JWT, Microservicios.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Servidores & DevOps</h4>
-                <ul className="tech-bullet-list">
-                  <li>Ubuntu Server (Home Server)</li>
-                  <li>Docker & Docker Compose</li>
-                  <li>Cloudflare Tunnels (cloudflared)</li>
-                  <li>Bash & Línea de comandos Linux</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <Boxes className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>DevOps & Servidores</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Ubuntu Server (Home Server), Docker, Docker Compose, cloudflared, Bash.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Automatización (Python)</h4>
-                <ul className="tech-bullet-list">
-                  <li>Backups automatizados de BD</li>
-                  <li>Rotación y retención de respaldos</li>
-                  <li>Scripts para redespliegue de apps</li>
-                  <li>Mantenimiento de servidores</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Automatización (Python)</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Scripts de backups periódicos, rotación gzip y redespliegues.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Bases de Datos</h4>
-                <ul className="tech-bullet-list">
-                  <li>PostgreSQL (Relacional / ACID)</li>
-                  <li>MySQL & MariaDB</li>
-                  <li>MongoDB (NoSQL Documental)</li>
-                  <li>SQLite</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <Database className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Bases de Datos</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  PostgreSQL (ACID), MySQL, MariaDB, MongoDB (NoSQL), SQLite.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Multiplataforma (Flutter)</h4>
-                <ul className="tech-bullet-list">
-                  <li>Flutter para Móviles (Android/iOS)</li>
-                  <li>Flutter para Escritorio (Desktop)</li>
-                  <li>Dart & Consumo de APIs REST</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Multiplataforma & Web</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Flutter (Android, iOS, Desktop), Dart, React.js, Next.js, Tailwind CSS.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Frontend Web</h4>
-                <ul className="tech-bullet-list">
-                  <li>React.js & Next.js</li>
-                  <li>JavaScript (ES6+) & TypeScript</li>
-                  <li>HTML5 Semántico & CSS3</li>
-                </ul>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <h3 className="font-bold text-white mb-1 flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Herramientas & Flujo</span>
+                </h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Git, GitHub, Postman, Linux Terminal, Blender (3D), Scrum.
+                </p>
               </div>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">3D & Motores Gráficos</h4>
-                <ul className="tech-bullet-list">
-                  <li>Blender (Modelado 3D - Intermedio)</li>
-                  <li>Unity (Nivel Básico)</li>
-                  <li>Unreal Engine (Nivel Básico)</li>
-                </ul>
-              </div>
+            </div>
+          </section>
 
-              <div className="tech-group">
-                <h4 className="tech-group-name">Herramientas & Flujo</h4>
-                <ul className="tech-bullet-list">
-                  <li>Git, GitHub & Control de Versiones</li>
-                  <li>Postman (Pruebas de APIs)</li>
-                  <li>VS Code</li>
-                  <li>Jira & Metodologías Ágiles (Scrum)</li>
-                </ul>
-              </div>
-            </section>
+          {/* Section: Proyectos Destacados */}
+          <section className="space-y-4">
+            <h2 className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <Server className="w-3.5 h-3.5" />
+              <span>{t.cv.projectsTitle}</span>
+            </h2>
 
-            {/* Idiomas */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Idiomas</h3>
-              <ul className="tech-bullet-list">
-                <li><strong>Español:</strong> Nativo</li>
-                <li><strong>Inglés:</strong> Técnico (Lectura fluida de documentación técnica)</li>
+            {/* Project 1 */}
+            <div className="space-y-1.5 break-inside-avoid">
+              <div className="flex items-center justify-between flex-wrap gap-1">
+                <h3 className="text-xs sm:text-sm font-bold text-white">
+                  {lang === 'es'
+                    ? 'Infraestructura Home-Server & Automatización con Python y Docker'
+                    : 'Home-Server Infrastructure & Automation with Python and Docker'}
+                </h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/40">
+                  DevOps & Linux
+                </span>
+              </div>
+              <p className="text-[11px] font-mono text-slate-400">
+                Ubuntu Server • Docker • Docker Compose • cloudflared • Python Scripts • PostgreSQL • MySQL • Bash
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-xs text-slate-300 leading-relaxed">
+                {lang === 'es' ? (
+                  <>
+                    <li>Diseñé, instalé y gestiono un servidor casero bajo Ubuntu Server con arquitectura de microservicios con Docker Compose.</li>
+                    <li>Configuré túneles seguros con Cloudflare Tunnels (cloudflared) para publicación web con cifrado SSL sin abrir puertos en el router.</li>
+                    <li>Creé scripts autónomos en Python que generan backups automáticos de bases de datos PostgreSQL y MySQL con rotación y compresión gzip.</li>
+                    <li>Implementé procesos de redespliegue de contenedores tras nuevas versiones de código.</li>
+                  </>
+                ) : (
+                  <>
+                    <li>Designed, installed, and administer an Ubuntu Server home lab running containerized microservices via Docker Compose.</li>
+                    <li>Configured encrypted Cloudflare Tunnels (cloudflared) for secure public service routing without opening router ports.</li>
+                    <li>Engineered custom Python scripts for automated database backups (PostgreSQL & MySQL), historical rotation, and gzip compression.</li>
+                    <li>Automated containerized redeployment workflows for seamless application updates.</li>
+                  </>
+                )}
               </ul>
-            </section>
-          </aside>
+            </div>
 
-          {/* Right Column */}
-          <main className="cv-right-col">
-            {/* Perfil Profesional */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Perfil Profesional</h3>
-              <p className="cv-text-justify">
-                <strong>Profesional Técnico en Ingeniería de Software</strong> graduado de <strong>SENATI</strong>. Especializado como <strong>Desarrollador Backend</strong> e infraestructura Linux, con experiencia práctica en la administración de servidores propios (<strong>Home Server bajo Ubuntu Server</strong>), contenedorización de servicios con <strong>Docker</strong> y despliegue seguro en la nube mediante <strong>Cloudflare Tunnels (cloudflared)</strong> sin apertura de puertos locales.
+            {/* Project 2 */}
+            <div className="space-y-1.5 break-inside-avoid pt-2">
+              <div className="flex items-center justify-between flex-wrap gap-1">
+                <h3 className="text-xs sm:text-sm font-bold text-white">
+                  {lang === 'es'
+                    ? 'Arquitectura de APIs RESTful con Node.js & NestJS'
+                    : 'RESTful API Architecture with Node.js & NestJS'}
+                </h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">
+                  Backend Modular
+                </span>
+              </div>
+              <p className="text-[11px] font-mono text-slate-400">
+                Node.js • NestJS • TypeScript • PostgreSQL • MongoDB • JWT • Postman
               </p>
-              <p className="cv-text-justify">
-                Dominio en el diseño y consumo de <strong>APIs RESTful</strong> modulares y escalables utilizando <strong>Node.js y NestJS</strong>, gestión de bases de datos relacionales (<strong>PostgreSQL, MySQL</strong>) y NoSQL (<strong>MongoDB</strong>). Experiencia destacada en la creación de <strong>scripts automatizados con Python</strong> para respaldos periódicos de bases de datos y redespliegue de aplicaciones. Complemento mi perfil con desarrollo de aplicaciones móviles y de escritorio en <strong>Flutter</strong>, frontend en <strong>React/Next.js</strong> y modelado 3D en <strong>Blender</strong>.
+              <ul className="list-disc list-inside space-y-1 text-xs text-slate-300 leading-relaxed">
+                {lang === 'es' ? (
+                  <>
+                    <li>Desarrollo de microservicios backend modulares con NestJS implementando controladores desacoplados e inyección de dependencias.</li>
+                    <li>Autenticación segura mediante tokens JWT, control de acceso por roles, validación estricta con DTOs y manejo centralizado de excepciones.</li>
+                    <li>Persistencia de datos con modelado relacional en PostgreSQL y colecciones documentales en MongoDB.</li>
+                  </>
+                ) : (
+                  <>
+                    <li>Engineered modular backend services using NestJS with decoupled controllers and dependency injection.</li>
+                    <li>Implemented secure JWT authentication, role-based access control, strict DTO validation, and centralized exception filters.</li>
+                    <li>Configured relational data modeling in PostgreSQL and document-based persistence in MongoDB.</li>
+                  </>
+                )}
+              </ul>
+            </div>
+
+            {/* Project 3 */}
+            <div className="space-y-1.5 break-inside-avoid pt-2">
+              <div className="flex items-center justify-between flex-wrap gap-1">
+                <h3 className="text-xs sm:text-sm font-bold text-white">
+                  {lang === 'es'
+                    ? 'Aplicaciones Multiplataforma con Flutter (Móvil & Desktop)'
+                    : 'Cross-Platform Applications with Flutter (Mobile & Desktop)'}
+                </h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/40">
+                  Flutter & Dart
+                </span>
+              </div>
+              <p className="text-[11px] font-mono text-slate-400">
+                Flutter • Dart • REST APIs • HTTP Client • Android • Desktop (Windows/Linux)
               </p>
-            </section>
+              <ul className="list-disc list-inside space-y-1 text-xs text-slate-300 leading-relaxed">
+                {lang === 'es' ? (
+                  <>
+                    <li>Construcción de aplicaciones multiplataforma con interfaces dinámicas para Android, iOS y entornos de escritorio.</li>
+                    <li>Consumo y sincronización de datos con endpoints RESTful mediante clientes HTTP en Dart con manejo de estados.</li>
+                  </>
+                ) : (
+                  <>
+                    <li>Built dynamic cross-platform applications targeting Android, iOS, and desktop environments.</li>
+                    <li>Integrated HTTP clients for real-time synchronization with RESTful endpoints and robust state management.</li>
+                  </>
+                )}
+              </ul>
+            </div>
 
-            {/* Proyectos Clave & Experiencia Práctica */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Proyectos Destacados & Experiencia Técnica</h3>
-              
-              <div className="cv-entry">
-                <div className="cv-entry-header">
-                  <h4 className="cv-entry-title">Infraestructura Home-Server & Automatización con Python y Docker</h4>
-                  <span className="cv-entry-badge">DevOps & Linux</span>
+          </section>
+
+          {/* Section: Educación Superior & Certificaciones */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-2">
+            
+            {/* Formación Académica (SENATI) */}
+            <section className="md:col-span-6 space-y-2 break-inside-avoid">
+              <h2 className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                <GraduationCap className="w-3.5 h-3.5" />
+                <span>{t.cv.eduTitle}</span>
+              </h2>
+
+              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white">SENATI</span>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30">
+                    {t.cv.titulado}
+                  </span>
                 </div>
-                <span className="cv-entry-stack">Ubuntu Server • Docker • Docker Compose • cloudflared • Python Scripts • PostgreSQL • MySQL</span>
-                <ul className="cv-entry-achievements">
-                  <li>Implementé y administro un servidor casero bajo Ubuntu Server con arquitectura de microservicios contenerizados mediante Docker Compose.</li>
-                  <li>Configuré túneles seguros con Cloudflare Tunnels (cloudflared) para publicar servicios internos a internet con cifrado SSL sin exponer puertos en el router.</li>
-                  <li>Desarrollé scripts en Python para automatizar copias de seguridad de bases de datos (PostgreSQL y MySQL), rotación y compresión de archivos de respaldo.</li>
-                  <li>Implementé flujos de redespliegue automatizado de aplicaciones y contenedores ante actualizaciones de código.</li>
-                </ul>
+                <h3 className="text-xs font-semibold text-cyan-300">
+                  {lang === 'es'
+                    ? 'Profesional Técnico en Ingeniería de Software con Inteligencia Artificial'
+                    : 'Software Engineering with Artificial Intelligence'}
+                </h3>
+                <p className="text-xs text-slate-400 pt-0.5 leading-relaxed">
+                  {lang === 'es'
+                    ? 'Carrera técnica profesional de 3 años de formación técnica superior orientada a arquitectura de software, backend, bases de datos relacionales y no relacionales, redes e inteligencia artificial.'
+                    : 'Rigorous 3-year higher technical program focused on software architecture, backend engineering, databases, networks, and AI.'}
+                </p>
               </div>
 
-              <div className="cv-entry">
-                <div className="cv-entry-header">
-                  <h4 className="cv-entry-title">Arquitectura de APIs RESTful con Node.js & NestJS</h4>
-                  <span className="cv-entry-badge">Backend Modular</span>
+              {/* Idiomas */}
+              <div className="pt-2">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  {t.cv.languagesTitle}
+                </h3>
+                <div className="flex items-center gap-4 text-xs text-slate-300">
+                  <span><strong>{lang === 'es' ? 'Español' : 'Spanish'}:</strong> {lang === 'es' ? 'Nativo' : 'Native'}</span>
+                  <span><strong>{lang === 'es' ? 'Inglés' : 'English'}:</strong> {lang === 'es' ? 'Técnico' : 'Technical'}</span>
                 </div>
-                <span className="cv-entry-stack">Node.js • NestJS • TypeScript • PostgreSQL • MongoDB • Postman</span>
-                <ul className="cv-entry-achievements">
-                  <li>Diseño de servicios backend escalables bajo arquitectura modular y desacoplada con NestJS.</li>
-                  <li>Implementación de autenticación JWT, validación de DTOs, manejo centralizado de excepciones y logging estructurado.</li>
-                  <li>Modelado de esquemas y transacciones en bases de datos relacionales (PostgreSQL) y documentales (MongoDB).</li>
-                </ul>
-              </div>
-
-              <div className="cv-entry">
-                <div className="cv-entry-header">
-                  <h4 className="cv-entry-title">Aplicaciones Multiplataforma con Flutter (Móvil & Desktop)</h4>
-                  <span className="cv-entry-badge">Flutter & Dart</span>
-                </div>
-                <span className="cv-entry-stack">Flutter • Dart • REST APIs • Android • Desktop (Windows/Linux)</span>
-                <ul className="cv-entry-achievements">
-                  <li>Construcción de aplicaciones nativas para móviles y sistemas de escritorio con interfaces reactivas y fluidas.</li>
-                  <li>Integración de clientes HTTP para consumo y sincronización en tiempo real con APIs RESTful.</li>
-                  <li>Gestión de estado y adaptación responsiva a pantallas táctiles y escritorios.</li>
-                </ul>
-              </div>
-
-              <div className="cv-entry">
-                <div className="cv-entry-header">
-                  <h4 className="cv-entry-title">Portafolio Web Profesional</h4>
-                  <span className="cv-entry-badge">Next.js & React</span>
-                </div>
-                <span className="cv-entry-stack">Next.js (App Router) • React.js • CSS3 Modular • Responsive Design</span>
-                <ul className="cv-entry-achievements">
-                  <li>Desarrollo de aplicación web personal con renderizado híbrido y optimización SEO.</li>
-                  <li>Visor interactivo de hoja de vida con motor de impresión y exportación a PDF para reclutadores técnicos.</li>
-                </ul>
-              </div>
-            </section>
-
-            {/* Formación Académica Superior (Solo SENATI) */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Formación Académica Superior</h3>
-              <div className="cv-edu-item">
-                <div className="cv-edu-header">
-                  <h4 className="cv-edu-institution">SENATI</h4>
-                  <span className="cv-edu-status">Concluido / Titulado</span>
-                </div>
-                <p className="cv-edu-degree"><strong>Profesional Técnico en Ingeniería de Software con Inteligencia Artificial</strong></p>
-                <p className="cv-edu-desc">Formación de nivel superior orientada a arquitectura de software, backend, bases de datos relacionales y NoSQL, redes, servidores y desarrollo de software moderno.</p>
               </div>
             </section>
 
-            {/* Certificaciones Oficiales */}
-            <section className="cv-block">
-              <h3 className="cv-block-title">Certificaciones Internacionales</h3>
-              <div className="cv-cert-grid">
+            {/* Certificaciones Cisco */}
+            <section className="md:col-span-6 space-y-2 break-inside-avoid">
+              <h2 className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                <Award className="w-3.5 h-3.5" />
+                <span>{t.cv.certsTitle}</span>
+              </h2>
+
+              <div className="space-y-1.5 text-xs">
                 {certificationsData.map((c, i) => (
-                  <div key={i} className="cv-cert-card">
-                    <div className="cv-cert-head">
-                      <span className="cert-check-icon">✓</span>
-                      <strong className="cv-cert-name">{c.title}</strong>
+                  <div
+                    key={i}
+                    className="p-2 rounded-lg bg-slate-950/50 border border-slate-800 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <div>
+                        <span className="font-semibold text-white block leading-tight">
+                          {c.title}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          {c.issuer}
+                        </span>
+                      </div>
                     </div>
-                    <span className="cv-cert-org">{c.issuer}</span>
-                    <a href={c.link} target="_blank" rel="noopener noreferrer" className="cv-cert-link no-print">
-                      Verificar Credencial ↗
+
+                    <a
+                      href={c.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[10px] font-semibold text-cyan-400 hover:text-cyan-300 no-print shrink-0"
+                    >
+                      <span>{t.cv.verified}</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
                     </a>
                   </div>
                 ))}
               </div>
             </section>
-          </main>
+
+          </div>
+
         </div>
       </div>
 
-      <style jsx>{`
-        .cv-wrapper {
-          min-height: 100vh;
-          background: #070a13;
-          padding-bottom: 5rem;
-        }
-
-        .cv-top-bar {
-          background: rgba(15, 23, 42, 0.95);
-          backdrop-filter: blur(15px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          padding: 1rem 0;
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .cv-top-container {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-
-        .cv-back-link {
-          color: var(--accent-cyan);
-          font-weight: 700;
-          font-size: 0.95rem;
-        }
-
-        .cv-actions {
-          display: flex;
-          gap: 0.75rem;
-        }
-
-        .btn-print {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.65rem 1.35rem;
-          background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-          border: none;
-          color: #fff;
-          font-weight: 700;
-          border-radius: var(--radius-sm);
-          cursor: pointer;
-          box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
-        }
-
-        .btn-whatsapp-cv {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.65rem 1.25rem;
-          background: rgba(16, 185, 129, 0.15);
-          border: 1px solid rgba(16, 185, 129, 0.4);
-          color: #34d399;
-          font-weight: 700;
-          border-radius: var(--radius-sm);
-        }
-
-        /* Document Paper */
-        .cv-paper {
-          background: #0d121f;
-          border: 1px solid rgba(56, 189, 248, 0.2);
-          border-radius: var(--radius-lg);
-          margin-top: 2.5rem;
-          padding: 3.5rem;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-          color: var(--text-main);
-        }
-
-        /* Header */
-        .cv-header {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 2rem;
-          padding-bottom: 2rem;
-          border-bottom: 2px solid rgba(56, 189, 248, 0.3);
-          margin-bottom: 2.5rem;
-        }
-
-        .cv-fullname {
-          font-size: 2.4rem;
-          font-weight: 900;
-          color: #fff;
-          letter-spacing: -0.5px;
-          line-height: 1.1;
-        }
-
-        .cv-profession {
-          font-size: 1.25rem;
-          color: var(--accent-cyan);
-          font-weight: 700;
-          margin-top: 0.35rem;
-        }
-
-        .cv-subline {
-          font-size: 0.95rem;
-          color: var(--text-muted);
-          margin-top: 0.25rem;
-        }
-
-        .cv-contact-row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1.25rem;
-          margin-top: 1.25rem;
-          font-size: 0.88rem;
-          color: var(--text-secondary);
-        }
-
-        .contact-item strong {
-          color: #fff;
-        }
-
-        .cv-photo-box {
-          width: 120px;
-          height: 120px;
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          border: 2px solid var(--accent-cyan);
-          flex-shrink: 0;
-        }
-
-        .cv-photo-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: top center;
-        }
-
-        /* Body Grid */
-        .cv-body-grid {
-          display: grid;
-          grid-template-columns: 280px 1fr;
-          gap: 3rem;
-        }
-
-        .cv-block {
-          margin-bottom: 2.25rem;
-        }
-
-        .cv-block-title {
-          font-size: 1.1rem;
-          font-weight: 800;
-          color: #fff;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 1rem;
-          padding-bottom: 0.4rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .tech-group {
-          margin-bottom: 1.25rem;
-        }
-
-        .tech-group-name {
-          font-size: 0.88rem;
-          color: var(--accent-cyan);
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.4rem;
-        }
-
-        .tech-bullet-list {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 0.35rem;
-        }
-
-        .tech-bullet-list li {
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          position: relative;
-          padding-left: 1rem;
-        }
-
-        .tech-bullet-list li::before {
-          content: '•';
-          position: absolute;
-          left: 0;
-          color: var(--accent-violet);
-          font-weight: 800;
-        }
-
-        .cv-text-justify {
-          color: var(--text-secondary);
-          line-height: 1.75;
-          font-size: 0.98rem;
-          margin-bottom: 0.75rem;
-        }
-
-        .cv-text-justify strong {
-          color: #fff;
-        }
-
-        /* Projects Entries */
-        .cv-entry {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: var(--radius-md);
-          padding: 1.25rem;
-          margin-bottom: 1.25rem;
-        }
-
-        .cv-entry-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-bottom: 0.25rem;
-        }
-
-        .cv-entry-title {
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: #fff;
-        }
-
-        .cv-entry-badge {
-          font-size: 0.75rem;
-          font-weight: 700;
-          background: rgba(56, 189, 248, 0.1);
-          color: var(--accent-cyan);
-          border: 1px solid rgba(56, 189, 248, 0.25);
-          padding: 0.2rem 0.6rem;
-          border-radius: var(--radius-full);
-          text-transform: uppercase;
-        }
-
-        .cv-entry-stack {
-          display: block;
-          font-size: 0.82rem;
-          color: var(--accent-violet);
-          font-weight: 600;
-          margin-bottom: 0.75rem;
-        }
-
-        .cv-entry-achievements {
-          list-style: disc;
-          padding-left: 1.25rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-        }
-
-        .cv-entry-achievements li {
-          font-size: 0.92rem;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-
-        /* Education */
-        .cv-edu-item {
-          margin-bottom: 1.25rem;
-          padding-bottom: 1rem;
-        }
-
-        .cv-edu-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 0.25rem;
-        }
-
-        .cv-edu-institution {
-          font-size: 1.2rem;
-          font-weight: 800;
-          color: var(--accent-cyan);
-        }
-
-        .cv-edu-status {
-          font-size: 0.78rem;
-          font-weight: 700;
-          background: rgba(16, 185, 129, 0.15);
-          color: #34d399;
-          padding: 0.2rem 0.6rem;
-          border-radius: var(--radius-full);
-        }
-
-        .cv-edu-degree {
-          font-size: 1.05rem;
-          color: #fff;
-          margin-bottom: 0.25rem;
-        }
-
-        .cv-edu-desc {
-          font-size: 0.88rem;
-          color: var(--text-muted);
-        }
-
-        /* Certifications */
-        .cv-cert-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0.85rem;
-        }
-
-        .cv-cert-card {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          padding: 0.85rem 1rem;
-          border-radius: var(--radius-sm);
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-
-        .cv-cert-head {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-        }
-
-        .cert-check-icon {
-          color: var(--accent-cyan);
-          font-weight: 800;
-        }
-
-        .cv-cert-name {
-          font-size: 0.9rem;
-          color: #fff;
-        }
-
-        .cv-cert-org {
-          font-size: 0.78rem;
-          color: var(--text-dim);
-        }
-
-        .cv-cert-link {
-          font-size: 0.78rem;
-          color: var(--accent-cyan);
-          text-decoration: underline;
-          margin-top: 0.25rem;
-        }
-
-        /* Print Specific Optimization for Professional 2-Column PDF */
-        @media print {
-          @page {
-            size: A4 portrait;
-            margin: 0.8cm 1cm;
-          }
-          .no-print {
-            display: none !important;
-          }
-          .cv-wrapper {
-            background: #fff !important;
-            padding: 0 !important;
-            margin: 0 !important;
-          }
-          .cv-paper {
-            background: #fff !important;
-            color: #0f172a !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-          }
-          .cv-header {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            border-bottom: 2.5px solid #0284c7 !important;
-            padding-bottom: 0.85rem !important;
-            margin-bottom: 1.25rem !important;
-          }
-          .cv-fullname {
-            font-size: 1.85rem !important;
-            font-weight: 900 !important;
-            color: #0f172a !important;
-            line-height: 1.1 !important;
-          }
-          .cv-profession {
-            font-size: 1.05rem !important;
-            font-weight: 800 !important;
-            color: #0284c7 !important;
-            margin-top: 0.2rem !important;
-          }
-          .cv-subline {
-            font-size: 0.78rem !important;
-            color: #475569 !important;
-            margin-top: 0.2rem !important;
-          }
-          .cv-contact-row {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 0.75rem !important;
-            margin-top: 0.65rem !important;
-            font-size: 0.74rem !important;
-            color: #334155 !important;
-          }
-          .contact-item strong {
-            color: #0f172a !important;
-          }
-          .cv-photo-box {
-            display: block !important;
-            width: 105px !important;
-            height: 105px !important;
-            border-radius: 12px !important;
-            overflow: hidden !important;
-            border: 2.5px solid #0284c7 !important;
-            flex-shrink: 0 !important;
-          }
-          .cv-photo-img {
-            display: block !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-          }
-          .cv-body-grid {
-            display: grid !important;
-            grid-template-columns: 215px 1fr !important;
-            gap: 1.75rem !important;
-          }
-          .cv-left-col {
-            border-right: 1.5px solid #e2e8f0 !important;
-            padding-right: 1.25rem !important;
-          }
-          .cv-block {
-            margin-bottom: 1.1rem !important;
-          }
-          .cv-block-title {
-            font-size: 0.92rem !important;
-            font-weight: 800 !important;
-            color: #0f172a !important;
-            border-bottom: 1.5px solid #0284c7 !important;
-            padding-bottom: 0.2rem !important;
-            margin-bottom: 0.55rem !important;
-            letter-spacing: 0.5px !important;
-          }
-          .tech-group {
-            margin-bottom: 0.7rem !important;
-          }
-          .tech-group-name {
-            font-size: 0.76rem !important;
-            font-weight: 800 !important;
-            color: #0284c7 !important;
-            margin-bottom: 0.2rem !important;
-          }
-          .tech-bullet-list {
-            gap: 0.2rem !important;
-          }
-          .tech-bullet-list li {
-            font-size: 0.74rem !important;
-            color: #334155 !important;
-            line-height: 1.35 !important;
-            padding-left: 0.8rem !important;
-          }
-          .tech-bullet-list li::before {
-            color: #0284c7 !important;
-          }
-          .cv-text-justify {
-            font-size: 0.78rem !important;
-            line-height: 1.5 !important;
-            color: #334155 !important;
-            margin-bottom: 0.5rem !important;
-          }
-          .cv-text-justify strong {
-            color: #0f172a !important;
-          }
-          .cv-entry {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 6px !important;
-            padding: 0.65rem 0.8rem !important;
-            margin-bottom: 0.65rem !important;
-            break-inside: avoid !important;
-          }
-          .cv-entry-header {
-            margin-bottom: 0.15rem !important;
-          }
-          .cv-entry-title {
-            font-size: 0.88rem !important;
-            font-weight: 800 !important;
-            color: #0f172a !important;
-          }
-          .cv-entry-badge {
-            font-size: 0.65rem !important;
-            background: #e0f2fe !important;
-            color: #0369a1 !important;
-            border: 1px solid #bae6fd !important;
-            padding: 0.1rem 0.45rem !important;
-          }
-          .cv-entry-stack {
-            font-size: 0.7rem !important;
-            color: #4338ca !important;
-            font-weight: 600 !important;
-            margin-bottom: 0.35rem !important;
-          }
-          .cv-entry-achievements {
-            gap: 0.2rem !important;
-            padding-left: 1.1rem !important;
-          }
-          .cv-entry-achievements li {
-            font-size: 0.73rem !important;
-            line-height: 1.35 !important;
-            color: #334155 !important;
-          }
-          .cv-edu-item {
-            padding-bottom: 0.4rem !important;
-            margin-bottom: 0.4rem !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-          }
-          .cv-edu-institution {
-            font-size: 0.92rem !important;
-            font-weight: 800 !important;
-            color: #0284c7 !important;
-          }
-          .cv-edu-status {
-            font-size: 0.68rem !important;
-            background: #dcfce7 !important;
-            color: #15803d !important;
-            padding: 0.1rem 0.45rem !important;
-          }
-          .cv-edu-degree {
-            font-size: 0.8rem !important;
-            font-weight: 700 !important;
-            color: #0f172a !important;
-          }
-          .cv-edu-desc {
-            font-size: 0.72rem !important;
-            color: #64748b !important;
-          }
-          .cv-cert-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 0.45rem !important;
-          }
-          .cv-cert-card {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            padding: 0.45rem 0.65rem !important;
-            border-radius: 4px !important;
-          }
-          .cv-cert-name {
-            font-size: 0.72rem !important;
-            font-weight: 700 !important;
-            color: #0f172a !important;
-          }
-          .cv-cert-org {
-            font-size: 0.66rem !important;
-            color: #64748b !important;
-          }
-          .cert-check-icon {
-            color: #0284c7 !important;
-            font-size: 0.75rem !important;
-          }
-        }
-
-        /* Screen only responsive breakpoint - Will NEVER affect print/PDF */
-        @media screen and (max-width: 868px) {
-          .cv-body-grid {
-            grid-template-columns: 1fr;
-          }
-          .cv-cert-grid {
-            grid-template-columns: 1fr;
-          }
-          .cv-header {
-            flex-direction: column;
-          }
-        }
-      `}</style>
     </div>
   );
 }

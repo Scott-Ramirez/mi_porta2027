@@ -2,173 +2,128 @@
 
 import Link from 'next/link';
 import { personalInfo } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import { ArrowUp, MessageSquare, FileText } from 'lucide-react';
+import GithubIcon from './GithubIcon';
 
 export default function Footer() {
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="footer">
-      <div className="container footer-container">
-        <div className="footer-brand">
-          <Link href="/" className="footer-logo">
-            <span className="bracket">&lt;</span>
-            <span className="brand-name">Anthony</span>
-            <span className="brand-highlight">.AI</span>
-            <span className="bracket">/&gt;</span>
-          </Link>
-          <p className="footer-tagline">
-            Ingeniería de Software con Inteligencia Artificial. Construyendo experiencias digitales rápidas, escalables y con propósito.
+    <footer className="relative border-t border-slate-800/80 bg-slate-950 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-900">
+          
+          {/* Brand Info */}
+          <div className="md:col-span-6 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-1 text-xl font-bold tracking-tight">
+              <span className="text-cyan-400 font-mono">&lt;</span>
+              <span className="text-white">Anthony</span>
+              <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">.AI</span>
+              <span className="text-cyan-400 font-mono">/&gt;</span>
+            </Link>
+            <p className="text-slate-400 text-sm max-w-md leading-relaxed">
+              {t.footer.tagline}
+            </p>
+          </div>
+
+          {/* Quick Nav Links */}
+          <div className="md:col-span-3 space-y-3">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-white">
+              {t.footer.navTitle}
+            </span>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <Link href="/#inicio" className="hover:text-cyan-400 transition-colors">
+                  {t.nav.home}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#proyectos" className="hover:text-cyan-400 transition-colors">
+                  {t.nav.projects}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#habilidades" className="hover:text-cyan-400 transition-colors">
+                  {t.nav.skills}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#certificados" className="hover:text-cyan-400 transition-colors">
+                  {t.nav.certs}
+                </Link>
+              </li>
+              <li>
+                <Link href="/#sobre-mi" className="hover:text-cyan-400 transition-colors">
+                  {t.nav.about}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* External Resources */}
+          <div className="md:col-span-3 space-y-3">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-white">
+              {t.footer.resTitle}
+            </span>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <Link href="/cv" className="inline-flex items-center gap-1.5 hover:text-cyan-400 transition-colors">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>{t.nav.cvBtn}</span>
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={personalInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-cyan-400 transition-colors"
+                >
+                  <GithubIcon className="w-3.5 h-3.5" />
+                  <span>GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={personalInfo.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>WhatsApp</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-slate-500 text-center sm:text-left">
+            &copy; {new Date().getFullYear()} {personalInfo.name}. {t.footer.rights}
           </p>
+
+          <button
+            onClick={scrollToTop}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white text-xs font-semibold border border-slate-800 transition-colors cursor-pointer"
+          >
+            <span>{t.footer.backToTop}</span>
+            <ArrowUp className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        <div className="footer-links">
-          <div className="link-col">
-            <span className="col-title">Navegación</span>
-            <Link href="/#inicio">Inicio</Link>
-            <Link href="/#proyectos">Proyectos</Link>
-            <Link href="/#habilidades">Habilidades</Link>
-            <Link href="/#certificados">Certificados</Link>
-          </div>
-
-          <div className="link-col">
-            <span className="col-title">Recursos</span>
-            <Link href="/cv">Curriculum Vitae (CV)</Link>
-            <a href={personalInfo.github} target="_blank" rel="noopener noreferrer">Repositorios GitHub</a>
-            <a href={personalInfo.whatsappUrl} target="_blank" rel="noopener noreferrer">Chat de WhatsApp</a>
-          </div>
-        </div>
       </div>
-
-      <div className="container footer-bottom">
-        <p className="copyright-text">
-          &copy; {new Date().getFullYear()} {personalInfo.name}. Todos los derechos reservados.
-        </p>
-
-        <button onClick={scrollToTop} className="back-to-top" title="Volver al inicio">
-          <span>Volver arriba</span>
-          <span>↑</span>
-        </button>
-      </div>
-
-      <style jsx>{`
-        .footer {
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(5, 7, 13, 0.95);
-          padding: 4rem 0 2rem;
-          margin-top: 4rem;
-        }
-
-        .footer-container {
-          display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 3rem;
-          margin-bottom: 3rem;
-        }
-
-        .footer-logo {
-          font-size: 1.5rem;
-          font-weight: 800;
-          display: inline-block;
-          margin-bottom: 1rem;
-        }
-
-        .bracket {
-          color: var(--accent-cyan);
-        }
-
-        .brand-name {
-          color: #fff;
-        }
-
-        .brand-highlight {
-          color: var(--accent-violet);
-        }
-
-        .footer-tagline {
-          color: var(--text-muted);
-          max-width: 420px;
-          line-height: 1.7;
-          font-size: 0.95rem;
-        }
-
-        .footer-links {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
-        }
-
-        .link-col {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .col-title {
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: #fff;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.25rem;
-        }
-
-        .link-col a {
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          transition: var(--transition-fast);
-        }
-
-        .link-col a:hover {
-          color: var(--accent-cyan);
-          transform: translateX(4px);
-        }
-
-        .footer-bottom {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding-top: 2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-
-        .copyright-text {
-          font-size: 0.85rem;
-          color: var(--text-dim);
-        }
-
-        .back-to-top {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--text-secondary);
-          padding: 0.45rem 0.9rem;
-          border-radius: var(--radius-sm);
-          font-size: 0.85rem;
-          cursor: pointer;
-          transition: var(--transition-fast);
-        }
-
-        .back-to-top:hover {
-          background: var(--accent-cyan);
-          color: #000;
-          font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-          .footer-container {
-            grid-template-columns: 1fr;
-          }
-          .footer-links {
-            grid-template-columns: 1fr 1fr;
-          }
-        }
-      `}</style>
     </footer>
   );
 }

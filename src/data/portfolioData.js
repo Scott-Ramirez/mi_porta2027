@@ -10,7 +10,7 @@ export const personalInfo = {
     "Flutter Multiplatform Developer"
   ],
   bio: "Profesional Técnico en Ingeniería de Software graduado de SENATI. Me especializo como Desarrollador Backend e infraestructura, con experiencia práctica en administración de servidores Linux (Ubuntu Server), contenedorización con Docker y despliegues seguros con Cloudflare Tunnels (cloudflared). Desarrollo APIs RESTful escalables con Node.js y NestJS, automatizo tareas críticas, copias de seguridad de bases de datos (PostgreSQL, MySQL, MongoDB) y redespliegues con scripts de Python, y construyo aplicaciones multiplataforma con Flutter.",
-  location: "Perú 🇵🇪",
+  location: "Perú",
   availability: "Disponible para contratación & proyectos",
   email: "anthonyscottramirez@gmail.com",
   phone: "+51 920569220",
@@ -32,42 +32,42 @@ export const personalInfo = {
 
 export const skillsData = {
   backend: [
-    { name: "Node.js & npm", icon: "🟢", description: "Desarrollo de servidores asíncronos de alto rendimiento, microservicios y gestión modular de dependencias con npm." },
-    { name: "NestJS", icon: "🦁", description: "Arquitectura backend empresarial con TypeScript, patrones modulares, inyección de dependencias y validaciones robustas." },
-    { name: "Diseño & Construcción de APIs REST", icon: "🔌", description: "Diseño de endpoints escalables, arquitectura limpia, autenticación JWT, middlewares y control de errores." },
-    { name: "Python para Automatización & Backend", icon: "🐍", description: "Desarrollo de scripts de mantenimiento para servidores, automatización de tareas de sistema, APIs y procesamiento de datos." }
+    { name: "Node.js & npm", icon: "Server", description: "Desarrollo de servidores asíncronos de alto rendimiento, microservicios y gestión modular de dependencias con npm." },
+    { name: "NestJS", icon: "Layers", description: "Arquitectura backend empresarial con TypeScript, patrones modulares, inyección de dependencias y validaciones robustas." },
+    { name: "Diseño & Construcción de APIs REST", icon: "Network", description: "Diseño de endpoints escalables, arquitectura limpia, autenticación JWT, middlewares y control de errores." },
+    { name: "Python para Automatización & Backend", icon: "Terminal", description: "Desarrollo de scripts de mantenimiento para servidores, automatización de tareas de sistema, APIs y procesamiento de datos." }
   ],
   devopsAndInfra: [
-    { name: "Ubuntu Server & Linux SysAdmin", icon: "🐧", description: "Instalación, configuración y mantenimiento de servidores caseros (Home Server), gestión de usuarios, permisos y SSH." },
-    { name: "Docker & Docker Compose", icon: "🐳", description: "Contenedorización de microservicios, aislamiento de aplicaciones, gestión de volúmenes persistentes y redes internas." },
-    { name: "Cloudflare Tunnels (cloudflared)", icon: "☁️", description: "Exposición pública segura de servicios locales sin apertura de puertos en router, con cifrado SSL y protección perimetral." },
-    { name: "Automatización de Backups & Redespliegues", icon: "⚡", description: "Scripts en Python y Bash para copias de seguridad automatizadas de bases de datos, rotación de backups y redespliegue de contenedores." }
+    { name: "Ubuntu Server & Linux SysAdmin", icon: "Terminal", description: "Instalación, configuración y mantenimiento de servidores caseros (Home Server), gestión de usuarios, permisos y SSH." },
+    { name: "Docker & Docker Compose", icon: "Boxes", description: "Contenedorización de microservicios, aislamiento de aplicaciones, gestión de volúmenes persistentes y redes internas." },
+    { name: "Cloudflare Tunnels (cloudflared)", icon: "Cloud", description: "Exposición pública segura de servicios locales sin apertura de puertos en router, con cifrado SSL y protección perimetral." },
+    { name: "Automatización de Backups & Redespliegues", icon: "Cpu", description: "Scripts en Python y Bash para copias de seguridad automatizadas de bases de datos, rotación de backups y redespliegue de contenedores." }
   ],
   databases: [
-    { name: "PostgreSQL", icon: "🐘", description: "Modelado relacional avanzado, integridad referencial, consultas optimizadas, transacciones ACID y backups programados." },
-    { name: "MySQL & MariaDB", icon: "🐬", description: "Diseño de esquemas, normalización, procedimientos almacenados y automatización de respaldos periódicos con scripts." },
-    { name: "MongoDB", icon: "🍃", description: "Bases de datos NoSQL documentales, consultas flexibles, indexación y almacenamiento de estructuras JSON." },
-    { name: "SQLite", icon: "💾", description: "Base de datos embebida ligera para aplicaciones locales, prototipos rápidos y entornos multiplataforma." }
+    { name: "PostgreSQL", icon: "Database", description: "Modelado relacional avanzado, integridad referencial, consultas optimizadas, transacciones ACID y backups programados." },
+    { name: "MySQL & MariaDB", icon: "Database", description: "Diseño de esquemas, normalización, procedimientos almacenados y automatización de respaldos periódicos con scripts." },
+    { name: "MongoDB", icon: "HardDrive", description: "Bases de datos NoSQL documentales, consultas flexibles, indexación y almacenamiento de estructuras JSON." },
+    { name: "SQLite", icon: "FileCode", description: "Base de datos embebida ligera para aplicaciones locales, prototipos rápidos y entornos multiplataforma." }
   ],
   flutterApps: [
-    { name: "Flutter para Móviles (Android & iOS)", icon: "📱", description: "Desarrollo de aplicaciones móviles con Dart, consumo de APIs RESTful, gestión de estado y diseño responsivo." },
-    { name: "Flutter para Escritorio (Desktop)", icon: "💻", description: "Creación de aplicaciones nativas de escritorio (Windows/Linux) con interfaz moderna y sincronización de datos." }
+    { name: "Flutter para Móviles (Android & iOS)", icon: "Smartphone", description: "Desarrollo de aplicaciones móviles con Dart, consumo de APIs RESTful, gestión de estado y diseño responsivo." },
+    { name: "Flutter para Escritorio (Desktop)", icon: "Laptop", description: "Creación de aplicaciones nativas de escritorio (Windows/Linux) con interfaz moderna y sincronización de datos." }
   ],
   frontend: [
-    { name: "React.js & Next.js", icon: "⚛️", description: "Desarrollo de interfaces reactivas, Server-Side Rendering (SSR), App Router y consumo eficiente de APIs." },
-    { name: "JavaScript (ES6+) & TypeScript", icon: "🟨", description: "Programación orientada a objetos, código tipado, manipulación avanzada del DOM y lógica de negocio." },
-    { name: "HTML5 & CSS3 Moderno", icon: "🎨", description: "Maquetación semántica, Flexbox, Grid, diseño responsivo y estilos limpios adaptables." }
+    { name: "React.js & Next.js", icon: "Code2", description: "Desarrollo de interfaces reactivas, Server-Side Rendering (SSR), App Router y consumo eficiente de APIs." },
+    { name: "JavaScript (ES6+) & TypeScript", icon: "FileCode2", description: "Programación orientada a objetos, código tipado, manipulación avanzada del DOM y lógica de negocio." },
+    { name: "HTML5 & CSS3 Moderno", icon: "Palette", description: "Maquetación semántica, Flexbox, Grid, diseño responsivo y estilos limpios adaptables." }
   ],
   creativity3D: [
-    { name: "Blender (Modelado 3D)", icon: "🟠", description: "Nivel intermedio: modelado 3D de piezas y props, texturizado básico, optimización de topología y exportación a motores." },
-    { name: "Unity", icon: "🎮", description: "Nivel básico: scripting con C#, manejo de físicas, configuración de jerarquías y prototipado interactivo." },
-    { name: "Unreal Engine", icon: "⚡", description: "Nivel básico: nociones de Blueprints, iluminación y exploración del motor." }
+    { name: "Blender (Modelado 3D)", icon: "Box", description: "Nivel intermedio: modelado 3D de piezas y props, texturizado básico, optimización de topología y exportación a motores." },
+    { name: "Unity", icon: "Gamepad2", description: "Nivel básico: scripting con C#, manejo de físicas, configuración de jerarquías y prototipado interactivo." },
+    { name: "Unreal Engine", icon: "Zap", description: "Nivel básico: nociones de Blueprints, iluminación y exploración del motor." }
   ],
   tools: [
-    { name: "Git & GitHub", icon: "🐙", description: "Control de versiones distribuido, ramas, Pull Requests y flujo de trabajo colaborativo." },
-    { name: "Postman", icon: "🚀", description: "Pruebas de endpoints REST, simulación de llamadas HTTP, automatización de pruebas y documentación de APIs." },
-    { name: "VS Code & Bash Terminal", icon: "💻", description: "Entorno de desarrollo altamente optimizado y navegación fluida por línea de comandos Linux." },
-    { name: "Jira / Metodologías Ágiles", icon: "📋", description: "Gestión de tareas y seguimiento de entregas bajo marcos ágiles (Scrum/Kanban)." }
+    { name: "Git & GitHub", icon: "GitBranch", description: "Control de versiones distribuido, ramas, Pull Requests y flujo de trabajo colaborativo." },
+    { name: "Postman", icon: "Send", description: "Pruebas de endpoints REST, simulación de llamadas HTTP, automatización de pruebas y documentación de APIs." },
+    { name: "VS Code & Bash Terminal", icon: "Terminal", description: "Entorno de desarrollo altamente optimizado y navegación fluida por línea de comandos Linux." },
+    { name: "Jira / Metodologías Ágiles", icon: "CheckSquare", description: "Gestión de tareas y seguimiento de entregas bajo marcos ágiles (Scrum/Kanban)." }
   ]
 };
 
@@ -118,7 +118,7 @@ export const certificationsData = [
     title: "Introducción a la Ciberseguridad",
     issuer: "Cisco Networking Academy",
     date: "Certificación Oficial",
-    icon: "🛡️",
+    icon: "ShieldCheck",
     badge: "Cybersecurity",
     link: "https://drive.google.com/file/d/1UM-7TQ8idvlc7zoFAQKpB3_iMfvPYKLU/view?usp=share_link"
   },
@@ -126,7 +126,7 @@ export const certificationsData = [
     title: "Introduction to IoT (Internet of Things)",
     issuer: "Cisco Networking Academy",
     date: "Certificación Oficial",
-    icon: "🌐",
+    icon: "Wifi",
     badge: "IoT",
     link: "https://drive.google.com/file/d/12CK8Zz5y7uemvMbdrowOvV12OxavSzDN/view?usp=share_link"
   },
@@ -134,7 +134,7 @@ export const certificationsData = [
     title: "Networking Essentials",
     issuer: "Cisco Networking Academy",
     date: "Certificación Oficial",
-    icon: "🔗",
+    icon: "Network",
     badge: "Redes",
     link: "https://drive.google.com/file/d/1BqZZOOfHJ05Ta8zebTATySy6yWS6qBB5/view?usp=share_link"
   },
@@ -142,7 +142,7 @@ export const certificationsData = [
     title: "Entrepreneurship",
     issuer: "Cisco Networking Academy",
     date: "Certificación Oficial",
-    icon: "🚀",
+    icon: "Rocket",
     badge: "Negocios",
     link: "https://drive.google.com/file/d/1KXFdxHKLUwuSQWB1eQl5Hqxv3xAOcpiB/view?usp=share_link"
   },
@@ -150,7 +150,7 @@ export const certificationsData = [
     title: "Get Connected",
     issuer: "Cisco Networking Academy",
     date: "Certificación Oficial",
-    icon: "📡",
+    icon: "Radio",
     badge: "Telecomunicaciones",
     link: "https://drive.google.com/file/d/11BIm_Y7Jq5NMbPYSuS9Qfya06PtvhBia/view?usp=share_link"
   }
@@ -163,6 +163,6 @@ export const educationData = [
     degree: "Profesional Técnico en Ingeniería de Software con Inteligencia Artificial",
     period: "Graduado / Titulado",
     status: "Concluido",
-    icon: "🎓"
+    icon: "GraduationCap"
   }
 ];

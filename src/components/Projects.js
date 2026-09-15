@@ -1,408 +1,237 @@
 'use client';
 
 import { useState } from 'react';
-import { projectsData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
+import { ExternalLink, Info, X, Terminal, ArrowUpRight } from 'lucide-react';
+import GithubIcon from './GithubIcon';
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState('Todos');
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.es;
+
+  const [activeCategory, setActiveCategory] = useState(t.projects.categories[0]);
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const categories = ['Todos', 'DevOps & Automatización', 'Backend & APIs', 'Móvil & Desktop', 'Frontend & Next.js'];
+  // Sync category if language switches
+  const currentCategories = t.projects.categories;
+  const isAll = activeCategory === currentCategories[0] || activeCategory === 'Todos' || activeCategory === 'All';
 
-  const filteredProjects = activeCategory === 'Todos'
-    ? projectsData
-    : projectsData.filter((p) => p.category === activeCategory);
+  const filteredProjects = isAll
+    ? t.projects.items
+    : t.projects.items.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="proyectos" className="projects-section">
-      <div className="container">
-        <div className="section-heading">
-          <span className="section-tag">Portafolio Seleccionado</span>
-          <h2 className="section-title">Proyectos Destacados</h2>
-          <p className="section-subtitle">
-            Proyectos reales enfocados en infraestructura propia (Ubuntu Server, Docker, cloudflared), automatización con Python, APIs REST con NestJS y aplicaciones Flutter.
+    <section id="proyectos" className="py-20 lg:py-28 relative">
+      <div className="absolute top-1/2 left-0 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <Terminal className="w-3.5 h-3.5" />
+            <span>{t.projects.tag}</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            {t.projects.title}
+          </h2>
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            {t.projects.subtitle}
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div className="filter-wrapper">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category Filter Pills (Wrap centrado sin desbordamiento) */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-4xl mx-auto mb-8 sm:mb-12 px-2">
+          {currentCategories.map((cat, idx) => {
+            const isActive = (idx === 0 && isAll) || activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md shadow-cyan-950/60 font-semibold'
+                    : 'bg-slate-900/60 hover:bg-slate-850 text-slate-400 hover:text-slate-200 border border-slate-800'
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
         </div>
 
         {/* Projects Grid */}
-        <div className="projects-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((project) => (
-            <div key={project.id} className="project-card glass-card">
-              <div className="project-media">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="project-img" 
-                />
-                <span className="project-badge">{project.badge}</span>
-              </div>
-
-              <div className="project-content">
-                <div className="project-category-tag">{project.category}</div>
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-summary">{project.summary}</p>
-
-                <div className="tech-tags">
-                  {project.technologies.map((tech, idx) => (
-                    <span key={idx} className="tech-tag">{tech}</span>
-                  ))}
+            <div
+              key={project.id}
+              className="group flex flex-col justify-between rounded-2xl bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-cyan-950/40"
+            >
+              <div>
+                {/* Media Image with Overlay Badge */}
+                <div className="relative aspect-video w-full overflow-hidden bg-slate-950">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+                  
+                  <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-950/80 backdrop-blur-md border border-cyan-500/30 text-cyan-300">
+                    {project.badge}
+                  </span>
                 </div>
 
-                <div className="project-actions">
-                  {project.demoUrl && project.demoUrl !== '#' && (
-                    <a 
-                      href={project.demoUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="btn-primary-sm"
-                    >
-                      <span>Ver Demo</span>
-                      <span>↗</span>
-                    </a>
-                  )}
+                {/* Content */}
+                <div className="p-5 sm:p-6 space-y-3">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-cyan-400">
+                    {project.category}
+                  </span>
+                  <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed line-clamp-3">
+                    {project.summary}
+                  </p>
+
+                  {/* Tech tags */}
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {project.technologies.slice(0, 5).map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-800/60 text-slate-300 border border-slate-700/50"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 5 && (
+                      <span className="px-2 py-1 rounded-md text-[10px] font-mono bg-slate-800/40 text-slate-400">
+                        +{project.technologies.length - 5}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Footer Actions */}
+              <div className="p-5 sm:p-6 pt-0 flex items-center justify-between gap-2 border-t border-slate-800/50 mt-4">
+                <button
+                  onClick={() => setSelectedProject(project)}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 py-2 cursor-pointer transition-colors"
+                >
+                  <Info className="w-3.5 h-3.5" />
+                  <span>{t.projects.detailsBtn}</span>
+                </button>
+
+                <div className="flex items-center gap-2">
                   {project.githubUrl && (
-                    <a 
-                      href={project.githubUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="btn-github-sm"
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                      title="GitHub"
                     >
-                      <img src="/img/iconos/github.svg" alt="GitHub" width="16" height="16" />
-                      <span>GitHub</span>
+                      <GithubIcon className="w-4 h-4" />
                     </a>
                   )}
-                  <button 
-                    onClick={() => setSelectedProject(project)}
-                    className="btn-details-sm"
-                  >
-                    Detalles
-                  </button>
                 </div>
               </div>
+
             </div>
           ))}
         </div>
+
       </div>
 
       {/* Project Details Modal */}
       {selectedProject && (
-        <div className="modal-backdrop" onClick={() => setSelectedProject(null)}>
-          <div className="modal-content glass-card" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setSelectedProject(null)}>✕</button>
-            <div className="modal-header">
-              <span className="project-badge">{selectedProject.badge}</span>
-              <span className="project-category-tag">{selectedProject.category}</span>
-              <h3 className="modal-title">{selectedProject.title}</h3>
-            </div>
-            <div className="modal-img-wrapper">
-              <img src={selectedProject.image} alt={selectedProject.title} />
-            </div>
-            <div className="modal-body">
-              <h4>Descripción y Arquitectura:</h4>
-              <p>{selectedProject.description}</p>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-900 border border-cyan-500/30 shadow-2xl shadow-black p-6 sm:p-8 space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-5 right-5 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
-              <h4 className="tech-heading">Tecnologías Implementadas:</h4>
-              <div className="tech-tags">
-                {selectedProject.technologies.map((t, idx) => (
-                  <span key={idx} className="tech-tag">{t}</span>
-                ))}
+            {/* Modal Header */}
+            <div className="space-y-2 pr-10">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
+                  {selectedProject.badge}
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  {selectedProject.category}
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
+                {selectedProject.title}
+              </h3>
+            </div>
+
+            {/* Modal Image */}
+            <div className="rounded-2xl overflow-hidden aspect-video bg-slate-950 border border-slate-800">
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Modal Description */}
+            <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-1.5">
+                  {t.projects.modalDescTitle}
+                </h4>
+                <p>{selectedProject.description}</p>
               </div>
 
-              <div className="modal-actions">
-                {selectedProject.demoUrl && selectedProject.demoUrl !== '#' && (
-                  <a href={selectedProject.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                    Abrir Proyecto en Vivo ↗
-                  </a>
-                )}
-                {selectedProject.githubUrl && (
-                  <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                    Ver Repositorio en GitHub
-                  </a>
-                )}
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">
+                  {t.projects.modalStackTitle}
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.technologies.map((techItem, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 rounded-lg text-xs font-mono bg-slate-800 text-slate-200 border border-slate-700"
+                    >
+                      {techItem}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+
+            {/* Modal Action Buttons */}
+            <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center gap-3">
+              {selectedProject.githubUrl && (
+                <a
+                  href={selectedProject.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-white bg-slate-800 hover:bg-slate-700 border border-slate-600 transition-colors"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                  <span>{t.projects.modalGithubBtn}</span>
+                </a>
+              )}
+            </div>
+
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        .projects-section {
-          padding: 6rem 0;
-          position: relative;
-        }
-
-        .filter-wrapper {
-          display: flex;
-          justify-content: center;
-          gap: 0.75rem;
-          margin-bottom: 3.5rem;
-          flex-wrap: wrap;
-        }
-
-        .filter-btn {
-          padding: 0.6rem 1.4rem;
-          border-radius: var(--radius-full);
-          background: rgba(15, 23, 42, 0.6);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--text-secondary);
-          font-weight: 600;
-          font-size: 0.9rem;
-          cursor: pointer;
-          transition: var(--transition-normal);
-        }
-
-        .filter-btn:hover {
-          color: #fff;
-          border-color: var(--accent-cyan);
-        }
-
-        .filter-btn.active {
-          background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-          border-color: transparent;
-          color: #fff;
-          box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-        }
-
-        .projects-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-          gap: 2rem;
-        }
-
-        .project-card {
-          display: flex;
-          flex-direction: column;
-          padding: 0;
-          overflow: hidden;
-        }
-
-        .project-media {
-          position: relative;
-          width: 100%;
-          height: 220px;
-          background: #0f172a;
-          overflow: hidden;
-        }
-
-        .project-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.6s ease;
-        }
-
-        .project-card:hover .project-img {
-          transform: scale(1.08);
-        }
-
-        .project-badge {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          background: rgba(15, 23, 42, 0.85);
-          backdrop-filter: blur(8px);
-          border: 1px solid var(--accent-cyan);
-          color: var(--accent-cyan);
-          font-size: 0.75rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          padding: 0.3rem 0.75rem;
-          border-radius: var(--radius-full);
-        }
-
-        .project-content {
-          padding: 1.75rem;
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-        }
-
-        .project-category-tag {
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: var(--accent-violet);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.5rem;
-        }
-
-        .project-title {
-          font-size: 1.35rem;
-          font-weight: 700;
-          color: #fff;
-          margin-bottom: 0.75rem;
-          line-height: 1.3;
-        }
-
-        .project-summary {
-          color: var(--text-muted);
-          font-size: 0.95rem;
-          line-height: 1.6;
-          margin-bottom: 1.25rem;
-          flex: 1;
-        }
-
-        .tech-tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.45rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-          font-size: 0.75rem;
-          font-weight: 600;
-          background: rgba(56, 189, 248, 0.08);
-          color: #7dd3fc;
-          border: 1px solid rgba(56, 189, 248, 0.2);
-          padding: 0.25rem 0.65rem;
-          border-radius: 6px;
-        }
-
-        .project-actions {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          flex-wrap: wrap;
-        }
-
-        .btn-primary-sm {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-          padding: 0.55rem 1rem;
-          background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-          color: #fff;
-          font-size: 0.85rem;
-          font-weight: 600;
-          border-radius: var(--radius-sm);
-        }
-
-        .btn-github-sm {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0.55rem 1rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          color: var(--text-secondary);
-          font-size: 0.85rem;
-          font-weight: 600;
-          border-radius: var(--radius-sm);
-        }
-
-        .btn-github-sm:hover {
-          border-color: #fff;
-          color: #fff;
-        }
-
-        .btn-details-sm {
-          background: transparent;
-          border: none;
-          color: var(--accent-cyan);
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          margin-left: auto;
-          text-decoration: underline;
-        }
-
-        /* Modal Styles */
-        .modal-backdrop {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(8px);
-          z-index: 2000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 1.5rem;
-        }
-
-        .modal-content {
-          max-width: 650px;
-          width: 100%;
-          max-height: 90vh;
-          overflow-y: auto;
-          position: relative;
-          background: #0f172a;
-          border: 1px solid var(--accent-cyan);
-          box-shadow: 0 0 50px rgba(6, 182, 212, 0.25);
-        }
-
-        .modal-close-btn {
-          position: absolute;
-          top: 1.25rem;
-          right: 1.25rem;
-          background: rgba(255, 255, 255, 0.1);
-          border: none;
-          color: #fff;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .modal-title {
-          font-size: 1.75rem;
-          font-weight: 800;
-          color: #fff;
-          margin-top: 0.5rem;
-        }
-
-        .modal-img-wrapper {
-          margin: 1.5rem 0;
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          max-height: 280px;
-        }
-
-        .modal-img-wrapper img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .modal-body h4 {
-          color: #fff;
-          font-size: 1.1rem;
-          margin-bottom: 0.5rem;
-        }
-
-        .modal-body p {
-          color: var(--text-secondary);
-          line-height: 1.7;
-          margin-bottom: 1.5rem;
-        }
-
-        .tech-heading {
-          margin-top: 1rem;
-        }
-
-        .modal-actions {
-          display: flex;
-          gap: 1rem;
-          margin-top: 2rem;
-          flex-wrap: wrap;
-        }
-      `}</style>
     </section>
   );
 }

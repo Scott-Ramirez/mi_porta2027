@@ -2,228 +2,139 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Menu, X, FileText, ArrowRight, Globe } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/data/translations';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang, toggleLang } = useLanguage();
+  const t = translations[lang] || translations.es;
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { href: '/#inicio', label: t.nav.home },
+    { href: '/#proyectos', label: t.nav.projects },
+    { href: '/#habilidades', label: t.nav.skills },
+    { href: '/#certificados', label: t.nav.certs },
+    { href: '/#sobre-mi', label: t.nav.about },
+    { href: '/#contacto', label: t.nav.contact },
+  ];
+
   return (
-    <header className={`navbar-header ${scrolled ? 'scrolled' : ''}`}>
-      <div className="container nav-container">
-        <Link href="/" className="nav-logo">
-          <span className="logo-bracket">&lt;</span>
-          <span className="logo-name">Anthony</span>
-          <span className="logo-highlight">.AI</span>
-          <span className="logo-bracket">/&gt;</span>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'py-3 bg-slate-950/85 backdrop-blur-xl border-b border-cyan-500/15 shadow-xl shadow-black/50'
+          : 'py-5 bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Brand Logo */}
+        <Link href="/" className="group flex items-center gap-1 text-xl font-bold tracking-tight">
+          <span className="text-cyan-400 font-mono transition-transform duration-200 group-hover:-translate-x-1">&lt;</span>
+          <span className="text-white">Anthony</span>
+          <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">.AI</span>
+          <span className="text-cyan-400 font-mono transition-transform duration-200 group-hover:translate-x-1">/&gt;</span>
         </Link>
 
-        {/* Desktop Links */}
-        <nav className="nav-menu desktop-menu">
-          <Link href="/#inicio" className="nav-link">Inicio</Link>
-          <Link href="/#proyectos" className="nav-link">Proyectos</Link>
-          <Link href="/#habilidades" className="nav-link">Habilidades</Link>
-          <Link href="/#certificados" className="nav-link">Certificados</Link>
-          <Link href="/#sobre-mi" className="nav-link">Sobre Mí</Link>
-          <Link href="/#contacto" className="nav-link">Contacto</Link>
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* Action Button */}
-        <div className="nav-actions">
-          <Link href="/cv" className="cv-badge-btn">
-            <span>Ver CV Interactivo</span>
-            <span className="cv-icon">📄</span>
+        {/* Desktop Actions & Language Toggle */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLang}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-cyan-300 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-400 transition-all cursor-pointer"
+            title="Cambiar idioma / Switch language"
+          >
+            <Globe className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="tracking-wide">{lang.toUpperCase()}</span>
+          </button>
+
+          <Link
+            href="/cv"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/10 rounded-full shadow-sm shadow-cyan-950/50 transition-all duration-200"
+          >
+            <FileText className="w-3.5 h-3.5 text-cyan-400" />
+            <span>{t.nav.cvBtn}</span>
           </Link>
 
-          <button 
-            className={`hamburger ${menuOpen ? 'open' : ''}`}
+          {/* Hamburger / Close button */}
+          <button
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Abrir menú"
+            className="p-2 text-slate-300 hover:text-white md:hidden rounded-lg bg-slate-900/60 border border-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            {menuOpen ? <X className="w-6 h-6 text-cyan-400" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Drawer Dropdown */}
       {menuOpen && (
-        <div className="mobile-dropdown">
-          <Link href="/#inicio" onClick={() => setMenuOpen(false)}>Inicio</Link>
-          <Link href="/#proyectos" onClick={() => setMenuOpen(false)}>Proyectos</Link>
-          <Link href="/#habilidades" onClick={() => setMenuOpen(false)}>Habilidades</Link>
-          <Link href="/#certificados" onClick={() => setMenuOpen(false)}>Certificados</Link>
-          <Link href="/#sobre-mi" onClick={() => setMenuOpen(false)}>Sobre Mí</Link>
-          <Link href="/#contacto" onClick={() => setMenuOpen(false)}>Contacto</Link>
-          <Link href="/cv" onClick={() => setMenuOpen(false)} className="mobile-cv-btn">Ver CV Completo</Link>
+        <div className="md:hidden bg-slate-950/95 backdrop-blur-2xl border-b border-cyan-500/20 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in fade-in slide-in-from-top duration-200">
+          <div className="flex flex-col space-y-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2.5 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-900/80 rounded-lg transition-colors"
+              >
+                <span>{link.label}</span>
+                <ArrowRight className="w-4 h-4 text-slate-500" />
+              </Link>
+            ))}
+          </div>
+
+          <div className="pt-3 border-t border-slate-800/80 flex flex-col gap-2">
+            {/* Mobile Language Switch */}
+            <button
+              onClick={() => {
+                toggleLang();
+              }}
+              className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-semibold text-cyan-300 bg-slate-900 border border-slate-800 rounded-xl"
+            >
+              <span className="flex items-center gap-2">
+                <Globe className="w-4 h-4 text-cyan-400" />
+                <span>Idioma / Language:</span>
+              </span>
+              <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/50">
+                {lang === 'es' ? 'Español (ES)' : 'English (EN)'}
+              </span>
+            </button>
+
+            <Link
+              href="/cv"
+              onClick={() => setMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-cyan-900/40 transition-all"
+            >
+              <FileText className="w-4 h-4" />
+              <span>{t.nav.cvDrawer}</span>
+            </Link>
+          </div>
         </div>
       )}
-
-      <style jsx>{`
-        .navbar-header {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-          padding: 1.25rem 0;
-          transition: all 0.3s ease;
-        }
-
-        .navbar-header.scrolled {
-          padding: 0.85rem 0;
-          background: rgba(7, 10, 19, 0.85);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(56, 189, 248, 0.12);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .nav-container {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .nav-logo {
-          font-size: 1.35rem;
-          font-weight: 800;
-          letter-spacing: -0.5px;
-          display: flex;
-          align-items: center;
-          gap: 2px;
-        }
-
-        .logo-bracket {
-          color: var(--accent-cyan);
-        }
-
-        .logo-name {
-          color: #fff;
-        }
-
-        .logo-highlight {
-          color: var(--accent-violet);
-        }
-
-        .nav-menu {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-        }
-
-        .nav-link {
-          color: var(--text-muted);
-          font-size: 0.95rem;
-          font-weight: 500;
-          position: relative;
-          padding: 0.25rem 0;
-        }
-
-        .nav-link:hover {
-          color: #fff;
-        }
-
-        .nav-link::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
-          transition: width 0.25s ease;
-        }
-
-        .nav-link:hover::after {
-          width: 100%;
-        }
-
-        .nav-actions {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-
-        .cv-badge-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.5rem 1.15rem;
-          border-radius: var(--radius-full);
-          background: rgba(139, 92, 246, 0.12);
-          border: 1px solid rgba(139, 92, 246, 0.35);
-          color: #d8b4fe;
-          font-size: 0.85rem;
-          font-weight: 600;
-          transition: var(--transition-normal);
-        }
-
-        .cv-badge-btn:hover {
-          background: var(--accent-violet);
-          color: #fff;
-          transform: translateY(-2px);
-          box-shadow: var(--glow-purple);
-        }
-
-        .hamburger {
-          display: none;
-          flex-direction: column;
-          gap: 5px;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          padding: 0.5rem;
-        }
-
-        .hamburger span {
-          width: 24px;
-          height: 2px;
-          background: #fff;
-          transition: 0.3s;
-          border-radius: 2px;
-        }
-
-        .mobile-dropdown {
-          display: none;
-          flex-direction: column;
-          gap: 1.25rem;
-          padding: 1.5rem 2rem;
-          background: rgba(11, 17, 33, 0.98);
-          border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .mobile-dropdown a {
-          color: var(--text-secondary);
-          font-size: 1.1rem;
-          font-weight: 500;
-        }
-
-        .mobile-cv-btn {
-          color: var(--accent-cyan) !important;
-          font-weight: 700 !important;
-        }
-
-        @media (max-width: 868px) {
-          .desktop-menu {
-            display: none;
-          }
-          .hamburger {
-            display: flex;
-          }
-          .mobile-dropdown {
-            display: flex;
-          }
-        }
-      `}</style>
     </header>
   );
 }
