@@ -61,19 +61,24 @@ body {
   box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.35);
 }
 
-/* Advanced Dark Tech Print Setup for PDF */
+/* Exact Official 1-Page A4 Print Configuration */
 @page {
   size: A4 portrait;
-  margin: 8mm 8mm 8mm 8mm;
+  margin: 5mm 7mm 5mm 7mm;
 }
 
 @media print {
   html, body {
-    background-color: #05070e !important;
+    background-color: #070a14 !important;
     background-image: none !important;
     color: #f8fafc !important;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+    max-height: 287mm !important;
+    overflow: hidden !important;
   }
   
   .no-print {
@@ -82,22 +87,29 @@ body {
 
   .print-page {
     box-shadow: none !important;
-    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+    border: none !important;
     margin: 0 auto !important;
-    padding: 24px 28px !important;
+    padding: 14px 18px !important;
+    width: 100% !important;
     max-width: 100% !important;
+    height: 100% !important;
+    max-height: 285mm !important;
     background-color: #0b1120 !important;
     color: #f8fafc !important;
-    border-radius: 16px !important;
-    page-break-after: avoid;
-  }
-
-  .break-inside-avoid {
-    break-inside: avoid !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
     page-break-inside: avoid !important;
+    break-after: avoid !important;
+    break-inside: avoid !important;
   }
 
-  /* Ensure text colors maintain tech contrast */
+  /* Force 1-page fit */
+  .a4-fit {
+    max-height: 280mm !important;
+    overflow: hidden !important;
+  }
+
   h1, h2, h3, h4, strong {
     color: #ffffff !important;
   }
