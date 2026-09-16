@@ -310,13 +310,13 @@ export default function CVPage() {
                   <ul className="list-disc list-inside space-y-0.5 text-[10px] text-slate-300 print:text-slate-700 leading-snug">
                     {lang === 'es' ? (
                       <>
-                        <li>Administro un servidor casero propio bajo Ubuntu Server con microservicios contenerizados mediante Docker Compose.</li>
+                        <li>Administro un servidor casero propio bajo Ubuntu Server con aplicaciones contenerizadas mediante Docker Compose.</li>
                         <li>Configuré túneles Cloudflare Tunnels (cloudflared) para publicación web segura con SSL sin exponer puertos.</li>
                         <li>Creé scripts autónomos en Python para backups de bases de datos, rotación gzip y redespliegue de apps.</li>
                       </>
                     ) : (
                       <>
-                        <li>Administer an Ubuntu Server home lab running containerized microservices via Docker Compose.</li>
+                        <li>Administer an Ubuntu Server home lab running containerized applications via Docker Compose.</li>
                         <li>Configured encrypted Cloudflare Tunnels (cloudflared) for secure public service routing without opening ports.</li>
                         <li>Built custom Python automation scripts for scheduled database backups, gzip rotation, and app redeployments.</li>
                       </>
@@ -333,7 +333,7 @@ export default function CVPage() {
                         : '2. RESTful API Architecture with Node.js & NestJS'}
                     </h3>
                     <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-indigo-950 print:bg-indigo-100 text-indigo-300 print:text-indigo-800 border border-indigo-800/40 print:border-indigo-300">
-                      Backend Modular
+                      APIs RESTful
                     </span>
                   </div>
                   <div className="text-[9.5px] font-mono text-indigo-400/90 print:text-indigo-700">
@@ -342,13 +342,13 @@ export default function CVPage() {
                   <ul className="list-disc list-inside space-y-0.5 text-[10px] text-slate-300 print:text-slate-700 leading-snug">
                     {lang === 'es' ? (
                       <>
-                        <li>Desarrollo de microservicios modulares con NestJS, inyección de dependencias y controladores desacoplados.</li>
+                        <li>Desarrollo de módulos y APIs RESTful con NestJS, inyección de dependencias y controladores desacoplados.</li>
                         <li>Autenticación segura JWT, validación estricta de payloads con DTOs y manejo centralizado de excepciones.</li>
                         <li>Modelado relacional ACID en PostgreSQL y almacenamiento documental en MongoDB.</li>
                       </>
                     ) : (
                       <>
-                        <li>Engineered modular backend microservices in NestJS with dependency injection and decoupled controllers.</li>
+                        <li>Engineered modular backend RESTful APIs in NestJS with dependency injection and decoupled controllers.</li>
                         <li>Implemented JWT security, role authorization, strict DTO payload validation, and global exception filters.</li>
                         <li>Relational ACID modeling in PostgreSQL and flexible document persistence in MongoDB.</li>
                       </>

@@ -32,14 +32,14 @@ export const personalInfo = {
 
 export const skillsData = {
   backend: [
-    { name: "Node.js & npm", icon: "Server", description: "Desarrollo de servidores asíncronos de alto rendimiento, microservicios y gestión modular de dependencias con npm." },
-    { name: "NestJS", icon: "Layers", description: "Arquitectura backend empresarial con TypeScript, patrones modulares, inyección de dependencias y validaciones robustas." },
+    { name: "Node.js & npm", icon: "Server", description: "Desarrollo de servidores asíncronos de alto rendimiento, APIs RESTful y gestión modular de dependencias con npm." },
+    { name: "NestJS", icon: "Boxes", description: "Arquitectura modular para APIs RESTful, controladores desacoplados, servicios e inyección de dependencias." },
     { name: "Diseño & Construcción de APIs REST", icon: "Network", description: "Diseño de endpoints escalables, arquitectura limpia, autenticación JWT, middlewares y control de errores." },
     { name: "Python para Automatización & Backend", icon: "Terminal", description: "Desarrollo de scripts de mantenimiento para servidores, automatización de tareas de sistema, APIs y procesamiento de datos." }
   ],
   devopsAndInfra: [
     { name: "Ubuntu Server & Linux SysAdmin", icon: "Terminal", description: "Instalación, configuración y mantenimiento de servidores caseros (Home Server), gestión de usuarios, permisos y SSH." },
-    { name: "Docker & Docker Compose", icon: "Boxes", description: "Contenedorización de microservicios, aislamiento de aplicaciones, gestión de volúmenes persistentes y redes internas." },
+    { name: "Docker & Docker Compose", icon: "Boxes", description: "Contenedorización de aplicaciones en contenedores, aislamiento de aplicaciones, gestión de volúmenes persistentes y redes internas." },
     { name: "Cloudflare Tunnels (cloudflared)", icon: "Cloud", description: "Exposición pública segura de servicios locales sin apertura de puertos en router, con cifrado SSL y protección perimetral." },
     { name: "Automatización de Backups & Redespliegues", icon: "Cpu", description: "Scripts en Python y Bash para copias de seguridad automatizadas de bases de datos, rotación de backups y redespliegue de contenedores." }
   ],
